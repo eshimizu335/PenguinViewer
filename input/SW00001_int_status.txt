@@ -1,0 +1,15 @@
+#SW001-1#sh interfaces status
+Load for five secs: 14%/0%; one minute: 14%; five minutes: 12%
+Time source is NTP, 07:53:32.429 JST Tue Jan 5 2021
+Port      Name               Status       Vlan       Duplex  Speed Type
+Gi1/0/1   SSSSW06004B-2 Gi0/ connected    trunk      a-full a-1000 10/100/1000BaseTX
+Gi1/0/2   SSSSW06004B-2 Gi0/ connected    trunk      a-full a-1000 10/100/1000BaseTX
+Gi1/0/3                      notconnect   1            auto   auto 10/100/1000BaseTX
+Gi1/0/12  B-49               connected    4          a-full a-1000 10/100/1000BaseTX
+Gi1/0/22  AP-60-4B-03        connected    39         a-full a-1000 10/100/1000BaseTX
+Gi1/0/26  SSSSW06001A-1 Eth3 connected    trunk      a-full a-1000 1000BaseSX SFP
+Gi1/0/27                     notconnect   1            auto   auto Not Present
+Po1       SSSSW06001A-0,1 Po connected    trunk      a-full a-1000 
+Po2       SSSSW06004B-2 Po1  connected    trunk      a-full a-1000 
+Fa0                          disabled     routed       auto   auto 10/100BaseTX
+SSSSW06004B-1#

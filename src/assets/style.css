@@ -1,0 +1,33 @@
+.left{
+  width: 95%;
+  display: inline-block;
+  vertical-align: top;
+  background-color:#D7EEFF;
+  }
+
+.right{
+  width: 4%;
+  display: inline-block;
+  vertical-align: top;
+  background-color:#D7EEFF !important;
+}
+
+.theme {
+  padding: 0px 24px;
+  font-size: 20px;
+  }
+
+.command {
+  font-size: 20px;
+  }
+
+.app_link {
+  color: white !important;
+  font-size: 24px;
+  text-decoration: none;
+  font-weight: bold;
+  background-color: #191970 !important;
+  padding: 20px;
+  margin: 30px;
+
+}

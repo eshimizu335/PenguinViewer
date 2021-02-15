@@ -1,0 +1,12 @@
+SW003-1# show cdp neighbors
+Capability Codes: R - Router, T - Trans Bridge, B - Source Route Bridge
+                  S - Switch, H - Host, I - IGMP, r - Repeater, p - Phone,
+                  D - Remote, C - CVTA, M - Two-port Mac Relay
+				  
+Device ID Local Intrfce Holdtme Capability Platform Port ID
+SW001-1    Gig 0/49       133     R S I C   N7K-C7009 Gig1/0/16
+SW001-2    Gig 0/50       133     R S I C   N7K-C7009 Gig1/0/16
+SW004-2    Gig 0/1        133     R S I C   N7K-C7009 Gig 0/1
+SW011      Gig 0/2        176     S I       WS-C2960X Gig 0/50
+SW012      Gig 0/3        176     S I       WS-C2960X Gig 0/50
+SW013      Gig 0/4        176     S I       WS-C2960X Gig 0/50

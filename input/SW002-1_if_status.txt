@@ -1,0 +1,32 @@
+#SW001-1#sh interfaces status
+Load for five secs: 14%/0%; one minute: 14%; five minutes: 12%
+Time source is NTP, 07:53:32.429 JST Tue Jan 5 2021
+Port      Name               Status       Vlan       Duplex  Speed Type
+Gig0/1                       connected    1-20       auto    auto  10/100BaseTX
+Gig0/2                       connected    1          auto    auto  10/100BaseTX
+Gig0/3                       connected    1          auto    auto  10/100BaseTX
+Gig0/4                       connected    1          auto    auto  10GBASE-SR
+Gig0/5                       notconnect   1          auto    auto  10/100BaseTX
+Gig0/6                       notconnect   1          auto    auto  10/100BaseTX
+Gig0/7                       notconnect   1          auto    auto  10/100BaseTX
+Gig0/8                       notconnect   1          auto    auto  10/100BaseTX
+Gig0/9                       notconnect   1          auto    auto  10/100BaseTX
+Gig0/10                      notconnect   1          auto    auto  10/100BaseTX
+Gig0/11                      notconnect   1          auto    auto  10/100BaseTX
+Gig0/12                      notconnect   1          auto    auto  10/100BaseTX
+Gig0/13                      notconnect   1          auto    auto  10/100BaseTX
+Gig0/14                      notconnect   1          auto    auto  10/100BaseTX
+Gig0/15                      notconnect   1          auto    auto  10/100BaseTX
+Gig0/16                      notconnect   1          auto    auto  10/100BaseTX
+Gig0/17                      notconnect   1          auto    auto  10/100BaseTX
+Gig0/18                      notconnect   1          auto    auto  10/100BaseTX
+Gig0/19                      notconnect   1          auto    auto  10/100BaseTX
+Gig0/20                      notconnect   1          auto    auto  10/100BaseTX
+Gig0/21                      notconnect   1          auto    auto  10/100BaseTX
+Gig0/22                      notconnect   1          auto    auto  10/100BaseTX
+Gig0/23                      notconnect   1          auto    auto  10/100BaseTX
+Gig0/24                      notconnect   1          auto    auto  10/100BaseTX
+Gig1/1                       notconnect   1          auto    auto  10/100BaseTX
+Gig1/2                       notconnect   1          auto    auto  10/100BaseTX
+Gig1/3                       connected    1-20       auto    auto  1000BASE-SX
+Gig1/4                       connected    1-20       auto    auto  1000BASE-SX

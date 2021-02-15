@@ -1,0 +1,9 @@
+SW001-1#sh mac address-table 
+          Mac Address Table
+-------------------------------------------
+
+Vlan    Mac Address       Type        Ports
+----    -----------       --------    -----
+
+   1    0005.5e17.3701    DYNAMIC     Gig1/0/2
+   1    0006.2add.d901    DYNAMIC     Gig1/0/1

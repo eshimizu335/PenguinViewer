@@ -1,0 +1,68 @@
+[{
+    "selector": "node",
+    "style": {
+      "text-valign": "top",
+      "text-halign": "center",
+      "color": "black",
+      "text-outline-width": 2,
+      "text-outline-color": "white",
+      "font-size": "20px",
+      "opacity": 0.9,
+      "shape": "hexagon",
+      "width": 120,
+      "height": 110
+    }
+  },
+
+  {
+    "selector": "edge",
+    "style": {
+      "target-arrow-shape": "none",
+      "line-color": "green",
+      "curve-style": "bezier",
+      "width": 2,
+      "font-size": 13,
+      "source-text-offset": 30,
+      "target-text-offset": 40,
+      "source-text-margin-x": 0,
+      "source-text-margin-y": 12,
+      "target-text-margin-x": 0,
+      "target-text-margin-y": 12,
+      "source-text-rotation": "autorotate",
+      "target-text-rotation": "autorotate"
+    }
+  },
+
+  {
+    "selector": ".L3switch",
+    "style": {
+      "shape": "hexagon",
+      "width": 120,
+      "height": 110,
+      "background-fit": "cover",
+      "background-image": "https://upload.wikimedia.org/wikipedia/commons/2/22/The_queen_of_sweden_roses.jpg"
+    }
+  },
+
+  {
+    "selector": ".L2_dist",
+    "style": {
+      "shape": "hexagon",
+      "width": 120,
+      "height": 110,
+      "background-fit": "cover",
+      "background-image": "https://images.unsplash.com/photo-1580820726687-30e7ba70d976?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80"
+    }
+  },
+
+  {
+    "selector": ".L2_edge",
+    "style": {
+      "shape": "hexagon",
+      "width": 120,
+      "height": 110,
+      "background-fit": "cover",
+      "background-image": "https://images.unsplash.com/photo-1455582916367-25f75bfc6710?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=755&q=80"
+    }
+  }
+]
