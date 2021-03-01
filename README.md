@@ -1,6 +1,6 @@
 # Penguin Viewer
 
-Practical, Easy Network Graph with Unified Information
+## Practical, Easy Network Graph with Unified Information
 
 ## About
 
