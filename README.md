@@ -1,3 +1,5 @@
+[![SecHack365](https://img.shields.io/badge/SecHack365-2020-ffd700.svg)](https://sechack365.nict.go.jp/)
+
 # Penguin Viewer
 
 ## Practical, Easy Network Graph with Unified Information
@@ -17,5 +19,3 @@ This project is the result of the development in a security innovator training p
 ## License
 
 The code in this project is licensed under [MIT](https://choosealicense.com/licenses/mit/) license.
-
-[![SecHack365](https://img.shields.io/badge/SecHack365-2020-ffd700.svg)](https://sechack365.nict.go.jp/)
