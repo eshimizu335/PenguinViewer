@@ -1,4 +1,15 @@
-[{
+[
+  {"selector":".left",
+    "style":{
+      "background-color":"#f5ecf4"}
+  },
+
+  {"selector":".right",
+    "style":{
+      "background-color":"#f5ecf4"}
+  },
+
+  {
     "selector": "node",
     "style": {
       "text-valign": "top",
@@ -9,8 +20,8 @@
       "font-size": "20px",
       "opacity": 0.9,
       "shape": "hexagon",
-      "width": 120,
-      "height": 110
+      "width":240,
+      "height": 220
     }
   },
 
@@ -37,8 +48,8 @@
     "selector": ".L3switch",
     "style": {
       "shape": "hexagon",
-      "width": 120,
-      "height": 110,
+      "width": 240,
+      "height": 220,
       "background-fit": "cover",
       "background-image": "https://upload.wikimedia.org/wikipedia/commons/2/22/The_queen_of_sweden_roses.jpg"
     }
@@ -48,8 +59,8 @@
     "selector": ".L2_dist",
     "style": {
       "shape": "hexagon",
-      "width": 120,
-      "height": 110,
+      "width": 240,
+      "height": 220,
       "background-fit": "cover",
       "background-image": "https://images.unsplash.com/photo-1580820726687-30e7ba70d976?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80"
     }
@@ -59,8 +70,8 @@
     "selector": ".L2_edge",
     "style": {
       "shape": "hexagon",
-      "width": 120,
-      "height": 110,
+      "width": 240,
+      "height": 220,
       "background-fit": "cover",
       "background-image": "https://images.unsplash.com/photo-1455582916367-25f75bfc6710?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=755&q=80"
     }

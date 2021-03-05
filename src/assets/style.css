@@ -1,8 +1,20 @@
+H1{
+  color: #32373C !important;
+  font-size: 35px;
+  margin: 10px;
+  font-family: cursive;
+  font-weight: bold;
+  }
+
+.theme{
+  margin-bottom: 15px;
+}
+
 .left{
   width: 95%;
   display: inline-block;
   vertical-align: top;
-  background-color:#D7EEFF;
+  /*background-color:#D7EEFF;*/
   }
 
 .right{
@@ -23,11 +35,13 @@
 
 .app_link {
   color: white !important;
-  font-size: 24px;
+  font-size: 15px;
   text-decoration: none;
   font-weight: bold;
-  background-color: #191970 !important;
-  padding: 20px;
-  margin: 30px;
+  background-color: #32373C !important;
+  border-radius: 5px;
+  padding: 5px;
+  margin: 5px;
+  margin-left: 20px;
 
 }

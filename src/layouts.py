@@ -34,43 +34,44 @@ to_node = node_info_list[1]
 srcport = node_info_list[2]
 dstport = node_info_list[3]
 
-# fromとtoを持つedgeのデータフレームおよびnodesを作成
-edges = pd.DataFrame.from_dict({'from': from_node, 'to': to_node, 'srcport': srcport, 'dstport': dstport})
-nodes = set()
+# fromとtoを持つedgeのデータフレームおよびnodesを物理図用(p)、論理図用(l)それぞれ作成
+edges_p = pd.DataFrame.from_dict(
+    {'from': from_node, 'to': to_node, 'srcport': srcport, 'dstport': dstport, 'type': type_list})
+edges_l = pd.DataFrame.from_dict(
+    {'from': from_node, 'to': to_node, 'srcport': srcport, 'dstport': dstport, 'mode': mode_list})
+nodes_p = set()
+nodes_l = set()
 
 # edgeとnodeのリストを作成(物理図と論理図それぞれ用意)
 cy_edges_p = []
 cy_nodes_p = []
 cy_edges_l = []
 cy_nodes_l = []
-for index, row in edges.iterrows():
+
+# 物理図用のノード・エッジデータ作成
+for index, row in edges_p.iterrows():
     # source node, target nodeのid(ループ用、物理図用、論理図用)
     source, target, source_label, target_label = row['from'], row['to'], row['srcport'], row['dstport']
-    source_p, target_p, source_label_p, target_label_p = row['from'], row['to'], row['srcport'], row['dstport']
-    source_l, target_l, source_label_l, target_label_l = row['from'], row['to'], row['srcport'], row['dstport']
-
-    if source not in nodes:
-        nodes.add(source)
+    source_p, target_p, source_label_p, target_label_p, src_type = row['from'], row['to'], row['srcport'], row[
+        'dstport'], row['type']
+    if source not in nodes_p:
+        nodes_p.add(source)
         # classesはdata{}の外に書く
         if source in [core_primary, core_secondary]:
             cy_nodes_p.append({'data': {'id': source_p, 'label': source_p, 'model': 'L3switch'}, 'classes': 'L3switch'})
-            cy_nodes_l.append({'data': {'id': source_l, 'label': source_l, 'model': 'L3switch'}, 'classes': 'L3switch'})
         else:
             cy_nodes_p.append({'data': {'id': source_p, 'label': source_p, 'model': 'L2switch'}, 'classes': 'L2switch'})
-            cy_nodes_l.append({'data': {'id': source_l, 'label': source_l, 'model': 'L2switch'}, 'classes': 'L2switch'})
-    if target not in nodes:
-        nodes.add(target)
+    if target not in nodes_p:
+        nodes_p.add(target)
         if target in [core_primary, core_secondary]:
             cy_nodes_p.append({'data': {'id': target_p, 'label': target_p, 'model': 'L3switch'}, 'classes': 'L3switch'})
-            cy_nodes_l.append({'data': {'id': target_l, 'label': target_l, 'model': 'L3switch'}, 'classes': 'L3switch'})
         else:
             if source in [core_primary, core_secondary]:  # コアと直接つながっていたらディストリ
-                cy_nodes_p.append({'data': {'id': target_p, 'label': target_p, 'model': 'L2switch'}, 'classes': 'L2_dist'})
-                cy_nodes_l.append({'data': {'id': target_l, 'label': target_l, 'model': 'L2switch'}, 'classes': 'L2_dist'})
+                cy_nodes_p.append(
+                    {'data': {'id': target_p, 'label': target_p, 'model': 'L2switch'}, 'classes': 'L2_dist'})
             else:  # そうでなければエッジ
-                cy_nodes_p.append({'data': {'id': target_p, 'label': target_p, 'model': 'L2switch'}, 'classes': 'L2_edge'})
-                cy_nodes_l.append({'data': {'id': target_l, 'label': target_l, 'model': 'L2switch'}, 'classes': 'L2_edge'})
-
+                cy_nodes_p.append(
+                    {'data': {'id': target_p, 'label': target_p, 'model': 'L2switch'}, 'classes': 'L2_edge'})
     cy_edges_p.append({
         # srcportとdstportは独自キー
         'data': {
@@ -79,8 +80,36 @@ for index, row in edges.iterrows():
             'srcport': source_label_p,
             'dstport': target_label_p
         },
+        'classes': src_type
     })
 
+# 論理図用のノード・エッジデータ作成
+for index, row in edges_l.iterrows():
+    # source node, target nodeのid(ループ用、物理図用、論理図用)
+    source, target, source_label, target_label = row['from'], row['to'], row['srcport'], row['dstport']
+    source_l, target_l, source_label_l, target_label_l, src_mode = row['from'], row['to'], row['srcport'], row[
+        'dstport'], row['mode']
+    if source not in nodes_l:
+        nodes_l.add(source)
+        # classesはdata{}の外に書く
+        if source in [core_primary, core_secondary]:
+            cy_nodes_l.append(
+                {'data': {'id': source_l, 'label': source_l, 'model': 'L3switch'}, 'classes': 'L3switch'})
+        else:
+            cy_nodes_l.append(
+                {'data': {'id': source_l, 'label': source_l, 'model': 'L2switch'}, 'classes': 'L2switch'})
+    if target not in nodes_l:
+        nodes_l.add(target)
+        if target in [core_primary, core_secondary]:
+            cy_nodes_l.append(
+                {'data': {'id': target_l, 'label': target_l, 'model': 'L3switch'}, 'classes': 'L3switch'})
+        else:
+            if source in [core_primary, core_secondary]:  # コアと直接つながっていたらディストリ
+                cy_nodes_l.append(
+                    {'data': {'id': target_l, 'label': target_l, 'model': 'L2switch'}, 'classes': 'L2_dist'})
+            else:  # そうでなければエッジ
+                cy_nodes_l.append(
+                    {'data': {'id': target_l, 'label': target_l, 'model': 'L2switch'}, 'classes': 'L2_edge'})
     cy_edges_l.append({
         # srcportとdstportは独自キー
         'data': {
@@ -89,6 +118,7 @@ for index, row in edges.iterrows():
             'srcport': source_label_l,
             'dstport': target_label_l
         },
+        'classes': src_mode
     })
 
 # スタイル指定のためのjson読み込み

@@ -49,8 +49,8 @@ def update_graph_p(node_data_dict, edge_data_dict, clicked_node_dict, theme):  #
                                     'border-color': '#da70d6',
                                     'border-opacity': 0.9}}
         if clicked_node_dict:  # ノードがクリックされたら
-            left_style = {'width': '60%', 'overflow': 'auto'}
-            right_style = {'width': '40%', 'overflow': 'auto'}
+            left_style = {'width': '70%', 'overflow': 'auto'}
+            right_style = {'width': '30%', 'overflow': 'auto'}
             if clicked_node_dict['model'] == 'L3switch':  # クリックされたのがL3だったら
                 # ノードの色変更
                 style_node_clicked = {'selector': '#' + clicked_node_dict['id'],
@@ -100,8 +100,8 @@ def update_graph_p(node_data_dict, edge_data_dict, clicked_node_dict, theme):  #
                 updated_stylesheet = selected_stylesheet + [style_with_label] + [style_node_clicked]
                 return updated_stylesheet, wstyle, left_style, right_style
         else:  # ノードがクリックされてなかったら
-            left_style = {'width': '95%'}
-            right_style = {'width': '4%'}
+            left_style = {'width': '100%'}
+            right_style = {'width': '0%'}
             if edge_data_dict:  # edgeがクリックされたら
                 source_info_list = table.format_data_interface(edge_data_dict['source'])  # sourceのインターフェース情報を取得
                 for source_info in source_info_list:
@@ -138,8 +138,8 @@ def update_graph_p(node_data_dict, edge_data_dict, clicked_node_dict, theme):  #
                 updated_stylesheet = selected_stylesheet + [style_with_label]
                 return updated_stylesheet, wstyle, left_style, right_style
     else:  # ノードにマウスがかざされていないとき
-        left_style = {'width': '95%'}
-        right_style = {'width': '4%'}
+        left_style = {'width': '100%'}
+        right_style = {'width': '0%'}
         if edge_data_dict:  # edgeがクリックされたら
             source_info_list = table.format_data_interface(edge_data_dict['source'])  # sourceのインターフェース情報を取得
             for source_info in source_info_list:
@@ -220,8 +220,8 @@ def update_graph_l(node_data_dict, edge_data_dict, clicked_node_dict, theme):  #
                                     'border-color': '#da70d6',
                                     'border-opacity': 0.9}}
         if clicked_node_dict:  # ノードがクリックされたら
-            left_style = {'width': '60%', 'overflow': 'auto'}
-            right_style = {'width': '40%', 'overflow': 'auto'}
+            left_style = {'width': '70%', 'overflow': 'auto'}
+            right_style = {'width': '30%', 'overflow': 'auto'}
             if clicked_node_dict['model'] == 'L3switch':  # クリックされたのがL3だったら
                 # ノードの色変更
                 style_node_clicked = {'selector': '#' + clicked_node_dict['id'],
@@ -257,8 +257,8 @@ def update_graph_l(node_data_dict, edge_data_dict, clicked_node_dict, theme):  #
                 updated_stylesheet = selected_stylesheet + [style_with_label] + [style_node_clicked]
                 return updated_stylesheet, wstyle, left_style, right_style
         else:  # ノードがクリックされてなかったら
-            left_style = {'width': '95%'}
-            right_style = {'width': '4%'}
+            left_style = {'width': '100%'}
+            right_style = {'width': '0%'}
             if edge_data_dict:  # edgeがクリックされたら
                 source_info_list = table.format_data_interface(
                     edge_data_dict['source'])  # sourceのインターフェース情報を取得
@@ -281,8 +281,8 @@ def update_graph_l(node_data_dict, edge_data_dict, clicked_node_dict, theme):  #
                 updated_stylesheet = selected_stylesheet + [style_with_label]
                 return updated_stylesheet, wstyle, left_style, right_style
     else:  # ノードにマウスがかざされていないとき
-        left_style = {'width': '95%'}
-        right_style = {'width': '4%'}
+        left_style = {'width': '100%'}
+        right_style = {'width': '0%'}
         if edge_data_dict:  # edgeがクリックされたら
             source_info_list = table.format_data_interface(edge_data_dict['source'])  # sourceのインターフェース情報を取得
             for source_info in source_info_list:
