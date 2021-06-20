@@ -1,0 +1,97 @@
+[
+  {"selector":".left",
+    "style":{
+      "background-color":"#D7EEFF"
+      }
+  },
+
+  {"selector":".right",
+    "style":{
+      "background-color":"#D7EEFF"
+      }
+  },
+
+    {"selector": "node",
+     "style": {
+         "text-valign": "center",
+         "text-halign": "center",
+         "color": "black",
+         "text-outline-width": 5,
+         "text-outline-color": "white",
+         "font-size": "60px",
+         "font-weight":"bold",
+         "opacity": 0.9,
+         "shape": "square",
+         "width": 310,
+         "height": 150
+     }
+     },
+
+    {
+        "selector": "edge",
+        "style": {
+            "target-arrow-shape": "none",
+            "line-color": "#A4C6FF",
+            "curve-style": "bezier",
+            "width": 10,
+            "font-size": 13,
+            "source-text-offset": 30,
+            "target-text-offset": 40,
+            "source-text-margin-x": 0,
+            "source-text-margin-y": 12,
+            "target-text-margin-x": 0,
+            "target-text-margin-y": 12,
+            "source-text-rotation": "autorotate",
+            "target-text-rotation": "autorotate"
+        }
+    },
+
+    {
+        "selector": ".L3switch",
+        "style": {
+            "background-color": "#191970"
+        }
+    },
+
+    {
+        "selector": ".L2_dist",
+        "style": {
+            "background-color": "#5D8DE0"
+        }
+    },
+
+    {
+        "selector": ".L2_edge",
+        "style": {
+            "background-color": "#5D8DE0"
+        }
+    },
+
+    {
+        "selector": ".utp",
+        "style": {
+            "line-color": "#A4C6FF"
+        }
+    },
+
+    {
+        "selector": ".fiber",
+        "style": {
+            "line-color": "#FFFF00"
+        }
+    },
+
+    {
+        "selector": ".access",
+        "style": {
+            "line-color": "#5D8DE0"
+        }
+    },
+
+    {
+        "selector": ".trunk",
+        "style": {
+            "line-color": "#FFBEBD"
+        }
+    }
+]

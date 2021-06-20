@@ -1,0 +1,47 @@
+H1{
+  color: #32373C !important;
+  font-size: 35px;
+  margin: 10px;
+  font-family: cursive;
+  font-weight: bold;
+  }
+
+.theme{
+  margin-bottom: 15px;
+}
+
+.left{
+  width: 95%;
+  display: inline-block;
+  vertical-align: top;
+  /*background-color:#D7EEFF;*/
+  }
+
+.right{
+  width: 4%;
+  display: inline-block;
+  vertical-align: top;
+  background-color:#D7EEFF !important;
+}
+
+.theme {
+  padding: 0px 24px;
+  font-size: 20px;
+  }
+
+.command {
+  font-size: 20px;
+  }
+
+.app_link {
+  color: white !important;
+  font-size: 15px;
+  text-decoration: none;
+  font-weight: bold;
+  background-color: #32373C !important;
+  border-radius: 5px;
+  padding: 5px;
+  margin: 5px;
+  margin-left: 20px;
+
+}
