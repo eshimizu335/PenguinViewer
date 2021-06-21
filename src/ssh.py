@@ -52,6 +52,9 @@ for node in nodes_dict_list:
     model = version_dict[0]['hardware']
     print(from_list)
 
+    # ノード・エッジデータ作成
+    nodes_list.append({'data': {'id': hostname, 'label': hostname, 'model': model}})  # まずは自分を追加
+
     # show cdp neighborsコマンド実行結果(ouput_c)をDataFrameに変換してネイバー名とネイバーの機種名のみ取得し描画対象ノードリストに追加
     output_c = connection.send_command('show cdp neighbors', use_textfsm=True)
     print(output_c)
@@ -61,21 +64,16 @@ for node in nodes_dict_list:
         print('no cdp entry.')
     else:
         cdp_dict = df_c.to_dict(orient='records')
-        for cdp in cdp_dict:
-            to_list.append(cdp['neighbor'])
+        for cdp in cdp_dict:  # ここからネイバーを追加
+            nodes_list.append({'data': {'id': cdp['NEIGHBOR'], 'label': cdp['NEIGHBOR'], 'model': cdp['PLATFORM']}})
+            edges_list.append({
+                                  # srcportとdstportは独自キー
+                                  'data': {
+                                      'source': hostname,
+                                      'target': cdp['NEIGHBOR']
+                                  },
+            })
 
-    nodes_list.append({'data': {'id': hostname, 'label': hostname, 'model': model}})  # まずは自分を追加
-
-    # ノード・エッジデータ作成
-    for neighbor in to_list:  # ここからネイバーを追加
-        nodes_list.append({'data': {'id': neighbor, 'label': neighbor}})
-        edges_list.append({
-            # srcportとdstportは独自キー
-            'data': {
-                'source': hostname,
-                'target': neighbor
-            },
-        })
     # 切断
     connection.disconnect()
 
