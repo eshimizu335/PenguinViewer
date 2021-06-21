@@ -49,7 +49,7 @@ for node in nodes_dict_list:
     version_dict = df_v.to_dict(orient='records')
     hostname = version_dict[0]['hostname']
     from_list.append(hostname)  # 描画対象ノードリストに追加
-    model = version_dict[0]['hardware']
+    model = version_dict[0]['hardware'][0]  # hardwareはリストで取得してる(textfsm)
     print(from_list)
 
     # ノード・エッジデータ作成
@@ -65,13 +65,13 @@ for node in nodes_dict_list:
     else:
         cdp_dict = df_c.to_dict(orient='records')
         for cdp in cdp_dict:  # ここからネイバーを追加
-            nodes_list.append({'data': {'id': cdp['NEIGHBOR'], 'label': cdp['NEIGHBOR'], 'model': cdp['PLATFORM']}})
+            nodes_list.append({'data': {'id': cdp['neighbor'], 'label': cdp['neighbor'], 'model': cdp['platform']}})
             edges_list.append({
-                                  # srcportとdstportは独自キー
-                                  'data': {
-                                      'source': hostname,
-                                      'target': cdp['NEIGHBOR']
-                                  },
+                # srcportとdstportは独自キー
+                'data': {
+                    'source': hostname,
+                    'target': cdp['neighbor']
+                },
             })
 
     # 切断
