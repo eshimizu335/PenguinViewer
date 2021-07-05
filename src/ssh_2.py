@@ -1,4 +1,6 @@
 # 各スイッチにSSH接続し、取得した出力からホスト名のリストを生成する。
+# vtp statusも取得する。
+
 import datetime as dt
 import json
 import pandas as pd
@@ -52,8 +54,15 @@ for node in nodes_dict_list:
     model = version_dict[0]['hardware'][0]  # hardwareはリストで取得してる(textfsm)
     print(from_list)
 
+    # show vtp statusコマンド実行結果(output_vtp)をDataFrameに変換してvtp domainとvtp modeのみ取得
+    output_vtp = connection.send_command('show vtp status', use_textfsm=True)
+    df_vtp = pd.DataFrame(output_vtp)
+    vtp_dict = df_vtp.to_dict(orient='records')
+    vtp_domain = vtp_dict[0]['domain']
+    vtp_mode = vtp_dict[0]['mode']
+
     # ノード・エッジデータ作成
-    nodes_list.append({'data': {'id': hostname, 'label': hostname, 'model': model}})  # まずは自分を追加
+    nodes_list.append({'data': {'id': hostname, 'label': hostname, 'model': model, 'vtp_domain':vtp_domain, 'vtp_mode':vtp_mode}})  # まずは自分を追加
 
     # show cdp neighborsコマンド実行結果(ouput_c)をDataFrameに変換してネイバー名とネイバーの機種名のみ取得し描画対象ノードリストに追加
     output_c = connection.send_command('show cdp neighbors', use_textfsm=True)
