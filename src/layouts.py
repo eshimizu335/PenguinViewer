@@ -4,6 +4,7 @@ import os
 import pathlib
 
 import dash
+import dash_core_components as dcc
 import dash_cytoscape as cyt
 import dash_html_components as html
 
@@ -29,6 +30,42 @@ json_open_flower = open(assets_folder + 'flower.json')
 json_load_default = json.load(json_open_default)
 json_load_universe = json.load(json_open_universe)
 json_load_flower = json.load(json_open_flower)
+
+# 変数を使うスタイル指定
+common_style = [
+    {
+        # selectorの中に条件を定義すると特定のnode,edgeにスタイルを適用できる
+        # Group selectors
+        'selector': 'node',  # すべてのnodeに対して適用
+        'style': {
+            'content': 'data(id)',
+        }
+    },
+    {
+        'selector': 'edge',  # すべてのedgeに対して
+        'style': {
+            "source-label": "data(srcport)",
+            "target-label": "data(dstport)"
+        }
+    }]
+
+# 各デザインのスタイル
+default_stylesheet = common_style + json_load_default
+universe_stylesheet = common_style + json_load_universe
+flower_stylesheet = common_style + json_load_flower
+
+theme_dropdown = dcc.Dropdown(
+    id='theme_dropdown',
+    options=[
+        {'label': '標準', 'value': 'default'},
+        {'label': '宇宙', 'value': 'universe'},
+        {'label': '花', 'value': 'flower'}
+    ],
+    # value='default',  # 初期値の設定
+    placeholder='デザインを選択',
+    clearable=False,
+    className='theme'
+)
 
 graph_layout = {
     'name': 'circle'
