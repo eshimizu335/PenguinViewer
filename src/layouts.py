@@ -7,6 +7,7 @@ import dash
 import dash_core_components as dcc
 import dash_cytoscape as cyt
 import dash_html_components as html
+import dash_table
 
 from app import app
 
@@ -21,7 +22,7 @@ latest_json_file = max(file_updates, key=file_updates.get)
 latest_graph = open(latest_json_file, 'r')
 graph_data = json.load(latest_graph)  # JSONの読み込み
 
-access_time = os.path.basename(latest_json_file)    # ファイル名からスイッチへのアクセス時刻を取得
+access_time = os.path.basename(latest_json_file)  # ファイル名からスイッチへのアクセス時刻を取得
 
 # スタイル指定のためのjson読み込み
 json_open_default = open(assets_folder + 'default.json')
@@ -80,12 +81,48 @@ graph = cyt.Cytoscape(
     layout=graph_layout
 )
 
+# コマンドの出力表
+table = dash_table.DataTable(
+    # columnsにデータを渡す
+    columns=[
+        {'name': 'Port', 'id': 'Port'},
+        {'name': 'Description', 'id': 'Description'},
+        {'name': 'Status', 'id': 'Status'},
+        {'name': 'Vlan', 'id': 'Vlan'},
+        {'name': 'Duplex', 'id': 'Duplex'},
+        {'name': 'Speed', 'id': 'Speed'},
+        {'name': 'Type', 'id': 'Type'}
+    ],
+    # dataにデータを渡す
+    # dataのキーとcolumnsのidが一致するように！
+    data=graph_data,  # data_list_2はjsonから読み取るポートリスト
+    # テーブルを画面いっぱいに広げるかどうか
+    fill_width=False,  # 広げない
+    style_cell={'fontSize': 18, 'textAlign': 'center'},
+    style_header={'background-color': '#D7EEFF'}  # テーブルヘッダのスタイル
+)
+
+# ページ左側のレイアウト
+left = html.Div(
+    [theme_dropdown,
+     graph],
+    className='left',
+    id='left'
+)
+
+# ページ右側のレイアウト
+right = html.Div(
+    children=[
+        table
+    ],
+    className='right',
+    id='right'
+)
 
 app.layout = html.Div(
-    children=[
-        html.H1('Penguin Viewer'),
-        html.H2(access_time[0:4] + '/' + access_time[4:6] + '/' + access_time[6:8] + ' ' + access_time[9:11] + ':' + access_time[11:13] + 'のネットワーク図'),
-        html.Div(graph)],
+    children=[html.H1('Penguin Viewer'),
+              html.H2(access_time[0:4] + '/' + access_time[4:6] + '/' + access_time[6:8] + ' ' + access_time[9:11] + ':' + access_time[11:13] + 'のネットワーク図'),
+              html.Div([left, right])],
     id='html',
     style={'backgroundColor': '#D7EEFF',
            'display': 'block',
