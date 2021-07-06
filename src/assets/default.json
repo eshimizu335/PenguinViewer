@@ -32,7 +32,7 @@
             "target-arrow-shape": "none",
             "line-color": "#A4C6FF",
             "curve-style": "bezier",
-            "width": 10,
+            "width": 3,
             "font-size": 13,
             "source-text-offset": 30,
             "target-text-offset": 40,
