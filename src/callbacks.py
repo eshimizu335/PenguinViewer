@@ -3,6 +3,8 @@ from app import app
 
 from layouts import default_stylesheet, universe_stylesheet, flower_stylesheet
 
+import dash_table
+
 
 # ドロップダウンでスタイルを変更し、マウスをかざしたノードの機種名を表示する
 @app.callback(
@@ -41,3 +43,34 @@ def update_graph(theme, node_data_dict):  # Inputの値が引数になる。
     # print(node_data_dict['model'])
     print(updated_stylesheet)
     return updated_stylesheet, html_style
+
+
+# クリックしたノードのインターフェース情報を表示する。
+@app.callback(
+    Output('table', 'children'),
+    [Input('graph', 'tapNodeData')],  # クリックしたノードのデータ辞書を受け取る
+)
+def show_table(clicked_node_dict):  # Inputの値が引数になる。
+    if clicked_node_dict:  # ノードがクリックされたら
+        clicked_node_name = clicked_node_dict['id']
+        # コマンド出力表の生成
+        table_data = dash_table.DataTable(
+            # columnsにデータを渡す
+            columns=[
+                {'name': 'Port', 'id': 'Port'},
+                {'name': 'Description', 'id': 'Description'},
+                {'name': 'Status', 'id': 'Status'},
+                {'name': 'Vlan', 'id': 'Vlan'},
+                {'name': 'Duplex', 'id': 'Duplex'},
+                {'name': 'Speed', 'id': 'Speed'},
+                {'name': 'Type', 'id': 'Type'}
+            ],
+            # dataにデータを渡す
+            # dataのキーとcolumnsのidが一致するように！
+            data=clicked_node_dict['interface_status'],  # jsonから読み取るポートリスト
+            # テーブルを画面いっぱいに広げるかどうか
+            fill_width=False,  # 広げない
+            style_cell={'fontSize': 18, 'textAlign': 'center'},
+            style_header={'background-color': '#D7EEFF'}  # テーブルヘッダのスタイル
+        )
+        return table_data

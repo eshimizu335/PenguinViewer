@@ -81,52 +81,28 @@ graph = cyt.Cytoscape(
     layout=graph_layout
 )
 
-
-def make_table(switch_data):
-    """コマンドの出力表を作る"""
-    table = dash_table.DataTable(
-        # columnsにデータを渡す
-        columns=[
-            {'name': 'Port', 'id': 'Port'},
-            {'name': 'Description', 'id': 'Description'},
-            {'name': 'Status', 'id': 'Status'},
-            {'name': 'Vlan', 'id': 'Vlan'},
-            {'name': 'Duplex', 'id': 'Duplex'},
-            {'name': 'Speed', 'id': 'Speed'},
-            {'name': 'Type', 'id': 'Type'}
-        ],
-        # dataにデータを渡す
-        # dataのキーとcolumnsのidが一致するように！
-        data=switch_data,  # jsonから読み取るポートリスト
-        # テーブルを画面いっぱいに広げるかどうか
-        fill_width=False,  # 広げない
-        style_cell={'fontSize': 18, 'textAlign': 'center'},
-        style_header={'background-color': '#D7EEFF'}  # テーブルヘッダのスタイル
-    )
-
-
 # ページ左側のレイアウト
 left = html.Div(
     [theme_dropdown,
      graph],
     className='left',
-    id='left'
+    id='left',
+    style={'width': '60%'}
 )
 
 # ページ右側のレイアウト
 right = html.Div(
-    children=[
-        table
-    ],
+    children=[html.H2('show interfaces status'),
+              html.Div(id='table')  # テーブル表示エリアは空のDivにしてidをつけておく
+              ],
     className='right',
-    id='right'
+    id='right',
+    style={'width': '40%'}
 )
 
-app.layout = html.Div(
+layout_html = html.Div(
     children=[html.H1('Penguin Viewer'),
-              html.H2(access_time[0:4] + '/' + access_time[4:6] + '/' + access_time[6:8] + ' ' + access_time[
-                                                                                                 9:11] + ':' + access_time[
-                                                                                                               11:13] + 'のネットワーク図'),
+              html.H2(access_time[0:4] + '/' + access_time[4:6] + '/' + access_time[6:8] + ' ' + access_time[9:11] + ':' + access_time[11:13] + 'のネットワーク図'),
               html.Div([left, right])],
     id='html',
     style={'backgroundColor': '#D7EEFF',
@@ -134,5 +110,3 @@ app.layout = html.Div(
            'overflow-x': 'scroll',
            'white-space': 'nowrap'})
 
-if __name__ == '__main__':
-    app.run_server(debug=False)
