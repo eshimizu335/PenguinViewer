@@ -69,7 +69,8 @@ theme_dropdown = dcc.Dropdown(
 )
 
 graph_layout = {
-    'name': 'circle'
+    'name': 'random',
+    #'roots': '#' + core
 }
 graph = cyt.Cytoscape(
     id='graph',  # Cytoscape自体にもid,layout,styleが必要
@@ -102,11 +103,12 @@ right = html.Div(
 
 layout_html = html.Div(
     children=[html.H1('Penguin Viewer'),
-              html.H2(access_time[0:4] + '/' + access_time[4:6] + '/' + access_time[6:8] + ' ' + access_time[9:11] + ':' + access_time[11:13] + 'のネットワーク図'),
+              html.H2(access_time[0:4] + '/' + access_time[4:6] + '/' + access_time[6:8] + ' ' + access_time[
+                                                                                                 9:11] + ':' + access_time[
+                                                                                                               11:13] + 'のネットワーク図'),
               html.Div([left, right])],
     id='html',
     style={'backgroundColor': '#D7EEFF',
            'display': 'block',
            'overflow-x': 'scroll',
            'white-space': 'nowrap'})
-
