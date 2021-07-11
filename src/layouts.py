@@ -88,24 +88,38 @@ left = html.Div(
      graph],
     className='left',
     id='left',
-    style={'width': '60%'}
+    style={'width': '100%'}
 )
 
 # ページ右側のレイアウト
+command_dropdown = dcc.Dropdown(
+    id='command_dropdown',
+    options=[
+{'label': 'ポートステータス(show interfaces status)', 'value': 'port'},
+        {'label': 'マックアドレステーブル(show mac-address-table)', 'value': 'mac'},
+        {'label': 'ルーティングテーブル(show ip route)', 'value': 'route'},
+        {'label': 'arp情報(show ip arp)', 'value': 'arp'}
+        {'label': 'IPインターフェース情報( show ip interface brief)', 'value': 'ip_int'},
+        {'label': 'VTP情報( show vtp status)', 'value': 'vtp'},
+        ],
+placeholder='閲覧したい情報を選択',
+    clearable=False,
+    className='command',
+    style={
+        'visibility': 'hidden'
+    }
+)
 right = html.Div(
-    children=[html.H2('show interfaces status'),
-              html.Div(id='table')  # テーブル表示エリアは空のDivにしてidをつけておく
-              ],
+    children=[html.H2(id='table_title'),
+              command_dropdown,
+              html.Div(id='table')],  # テーブル表示エリアは空のDivにしてidをつけておく
     className='right',
     id='right',
-    style={'width': '40%'}
 )
 
 layout_html = html.Div(
     children=[html.H1('Penguin Viewer'),
-              html.H2(access_time[0:4] + '/' + access_time[4:6] + '/' + access_time[6:8] + ' ' + access_time[
-                                                                                                 9:11] + ':' + access_time[
-                                                                                                               11:13] + 'のネットワーク図'),
+              html.H2(access_time[0:4] + '/' + access_time[4:6] + '/' + access_time[6:8] + ' ' + access_time[9:11] + ':' + access_time[11:13] + 'のネットワーク図'),
               html.Div([left, right])],
     id='html',
     style={'backgroundColor': '#D7EEFF',
