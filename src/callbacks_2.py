@@ -45,10 +45,10 @@ def update_graph(theme, node_data_dict):  # Inputの値が引数になる。
     return updated_stylesheet, html_style
 
 
-# ノードがクリックされたらグラフエリアを縮小して出力表を表示する。
+# ノードがクリックされたらグラフエリアを縮小してノード名を表示する。
 # (ノードがクリックされていないと返り値が得られずエラーを吐く模様。)
 @app.callback(
-    Output('table', 'children'),
+    Output('table_title', 'value'),
     Output('left', 'style'),
     Output('right', 'style'),
     Input('graph', 'tapNodeData'),
@@ -56,72 +56,94 @@ def update_graph(theme, node_data_dict):  # Inputの値が引数になる。
 def show_table(clicked_node_dict):
     if clicked_node_dict:
         # クリックされたノードのidを取得
-        clicked_node_id = clicked_node_dict['id']
-        # 幅の変更とテーブルの表示
-        left_style = {'width': '70%'}
-        right_style = {'width': '30%',
-                       'visibility': 'visible'}
-        # コマンド出力表の生成
-        table_data = dash_table.DataTable(
-            # columnsにデータを渡す
-            columns=[
-                {'name': 'Port', 'id': 'Port'},
-                {'name': 'Description', 'id': 'Description'},
-                {'name': 'Status', 'id': 'Status'},
-                {'name': 'Vlan', 'id': 'Vlan'},
-                {'name': 'Duplex', 'id': 'Duplex'},
-                {'name': 'Speed', 'id': 'Speed'},
-                {'name': 'Type', 'id': 'Type'}
-            ],
-            # dataにデータを渡す
-            # dataのキーとcolumnsのidが一致するように！
-            data=clicked_node_dict['interface_status'],  # jsonから読み取るポートリスト
-            # テーブルを画面いっぱいに広げるかどうか
-            fill_width=False,  # 広げない
-            style_cell={'fontSize': 18, 'textAlign': 'center'},
-            style_header={'background-color': '#D7EEFF'}  # テーブルヘッダのスタイル
-        )
-        return table_data, left_style, right_style
-    else:
-        pass
-
-@app.callback(
-    Output('table', 'children'),
-    Input('command_dropdown', 'value')
-)
-'''
-@app.callback(
-    Output('left', 'style'),
-    Output('right', 'style'),
-    [Input('graph', 'tapNodeData')],  # クリックしたノードのデータ辞書を受け取る
-)
-def show_table(clicked_node_dict):  # Inputの値が引数になる。
-    if clicked_node_dict:  # ノードがクリックされたら
         clicked_node_name = clicked_node_dict['id']
         # 幅の変更とテーブルの表示
         left_style = {'width': '70%'}
         right_style = {'width': '30%',
-                       'visibility':'visible'}
+                       'visibility': 'visible'}
+        return clicked_node_name, left_style, right_style
+    else:
+        pass
 
-        # コマンド出力表の生成
-        table_data = dash_table.DataTable(
-            # columnsにデータを渡す
-            columns=[
-                {'name': 'Port', 'id': 'Port'},
-                {'name': 'Description', 'id': 'Description'},
-                {'name': 'Status', 'id': 'Status'},
-                {'name': 'Vlan', 'id': 'Vlan'},
-                {'name': 'Duplex', 'id': 'Duplex'},
-                {'name': 'Speed', 'id': 'Speed'},
-                {'name': 'Type', 'id': 'Type'}
-            ],
-            # dataにデータを渡す
-            # dataのキーとcolumnsのidが一致するように！
-            data=clicked_node_dict['interface_status'],  # jsonから読み取るポートリスト
-            # テーブルを画面いっぱいに広げるかどうか
-            fill_width=False,  # 広げない
-            style_cell={'fontSize': 18, 'textAlign': 'center'},
-            style_header={'background-color': '#D7EEFF'}  # テーブルヘッダのスタイル
-        )
-        return table_data, left_style, right_style
-        '''
+
+# クリックされたノードの出力表を表示する。
+@app.callback(
+    Output('table', 'children'),
+    Input('graph', 'tapNodeData'),
+    Input('command_dropdown', 'value')
+)
+def show_table(clicked_node_dict, command):
+    # コマンド出力表の生成
+    if command == 'port':
+        table_columns = [
+            {'name': 'Port', 'id': 'Port'},
+            {'name': 'Description', 'id': 'Description'},
+            {'name': 'Status', 'id': 'Status'},
+            {'name': 'Vlan', 'id': 'Vlan'},
+            {'name': 'Duplex', 'id': 'Duplex'},
+            {'name': 'Speed', 'id': 'Speed'},
+            {'name': 'Type', 'id': 'Type'}
+        ]
+    elif command == 'ip_int':
+        table_columns = [
+            {'name': 'Intf', 'id': 'Intf'},
+            {'name': 'Ipaddr', 'id': 'Ipaddr'},
+            {'name': 'Status', 'id': 'Status'},
+            {'name': 'Proto', 'id': 'Proto'},
+        ]
+    elif command == 'vtp':
+        table_columns = [
+            {'name': 'Port', 'id': 'Port'},
+            {'name': 'Description', 'id': 'Description'},
+            {'name': 'Status', 'id': 'Status'},
+            {'name': 'Vlan', 'id': 'Vlan'},
+            {'name': 'Duplex', 'id': 'Duplex'},
+            {'name': 'Speed', 'id': 'Speed'},
+            {'name': 'Type', 'id': 'Type'}
+        ]
+    elif command == 'route':
+        table_columns = [
+            {'name': 'Port', 'id': 'Port'},
+            {'name': 'Description', 'id': 'Description'},
+            {'name': 'Status', 'id': 'Status'},
+            {'name': 'Vlan', 'id': 'Vlan'},
+            {'name': 'Duplex', 'id': 'Duplex'},
+            {'name': 'Speed', 'id': 'Speed'},
+            {'name': 'Type', 'id': 'Type'}
+        ]
+    elif command == 'mac':
+        table_columns = [
+            {'name': 'Port', 'id': 'Port'},
+            {'name': 'Description', 'id': 'Description'},
+            {'name': 'Status', 'id': 'Status'},
+            {'name': 'Vlan', 'id': 'Vlan'},
+            {'name': 'Duplex', 'id': 'Duplex'},
+            {'name': 'Speed', 'id': 'Speed'},
+            {'name': 'Type', 'id': 'Type'}
+        ]
+    elif command == 'arp':
+        table_columns = [
+            {'name': 'Port', 'id': 'Port'},
+            {'name': 'Description', 'id': 'Description'},
+            {'name': 'Status', 'id': 'Status'},
+            {'name': 'Vlan', 'id': 'Vlan'},
+            {'name': 'Duplex', 'id': 'Duplex'},
+            {'name': 'Speed', 'id': 'Speed'},
+            {'name': 'Type', 'id': 'Type'}
+        ]
+    else:
+        table_columns = [
+            {'name': 'Port', 'id': 'Port'}]
+
+    table_data = dash_table.DataTable(
+        # columnsにデータを渡す
+        columns=table_columns,
+        # dataにデータを渡す
+        # dataのキーとcolumnsのidが一致するように！
+        data=clicked_node_dict['interface_status'],  # jsonから読み取るポートリスト
+        # テーブルを画面いっぱいに広げるかどうか
+        fill_width=False,  # 広げない
+        style_cell={'fontSize': 18, 'textAlign': 'center'},
+        style_header={'background-color': '#D7EEFF'}  # テーブルヘッダのスタイル
+    )
+    return table_data

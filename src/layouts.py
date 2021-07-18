@@ -70,7 +70,7 @@ theme_dropdown = dcc.Dropdown(
 
 graph_layout = {
     'name': 'random',
-    #'roots': '#' + core
+    # 'roots': '#' + core
 }
 graph = cyt.Cytoscape(
     id='graph',  # Cytoscape自体にもid,layout,styleが必要
@@ -95,19 +95,17 @@ left = html.Div(
 command_dropdown = dcc.Dropdown(
     id='command_dropdown',
     options=[
-{'label': 'ポートステータス(show interfaces status)', 'value': 'port'},
-        {'label': 'マックアドレステーブル(show mac-address-table)', 'value': 'mac'},
-        {'label': 'ルーティングテーブル(show ip route)', 'value': 'route'},
-        {'label': 'arp情報(show ip arp)', 'value': 'arp'}
+        {'label': 'ポートステータス(show interfaces status)', 'value': 'port'},
         {'label': 'IPインターフェース情報( show ip interface brief)', 'value': 'ip_int'},
         {'label': 'VTP情報( show vtp status)', 'value': 'vtp'},
-        ],
-placeholder='閲覧したい情報を選択',
+        {'label': 'ルーティングテーブル(show ip route)', 'value': 'route'},
+        {'label': 'マックアドレステーブル(show mac-address-table)', 'value': 'mac'},
+        {'label': 'arp情報(show ip arp)', 'value': 'arp'},
+
+    ],
+    placeholder='閲覧したい情報を選択',
     clearable=False,
-    className='command',
-    style={
-        'visibility': 'hidden'
-    }
+    className='command'
 )
 right = html.Div(
     children=[html.H2(id='table_title'),

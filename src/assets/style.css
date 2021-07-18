@@ -10,6 +10,10 @@ H1{
   margin-bottom: 15px;
 }
 
+#command_dropdown{
+font-size: 10px;
+}
+
 .left{
   width: 95%;
   display: inline-block;
