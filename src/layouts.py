@@ -95,6 +95,7 @@ graph = cyt.Cytoscape(
 left = html.Div(
     [theme_dropdown,
      html.Div([core_hostname, apply_button]),
+     html.Div(id='vlan'),
      graph],
     className='left',
     id='left',
@@ -132,6 +133,7 @@ right = html.Div(
               show_button,
               status_button,
               ping_button,
+              html.Div(id='status_area'),
               html.Div(id='command_area'),
               html.Div(id='table_area')],  # テーブル表示エリアは空のDivにしてidをつけておく
     className='right',
