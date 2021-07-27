@@ -1,7 +1,7 @@
 import dash_html_components as html
 from app import app
 from layouts import graph, access_time, theme_dropdown
-import callbacks_3
+import callbacks_4
 from layouts import layout_html
 
 # レイアウトのインデックス

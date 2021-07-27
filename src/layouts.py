@@ -110,6 +110,7 @@ ping_button = html.Button('ping', id='ping_button')
 command_dropdown = dcc.Dropdown(
     id='command_dropdown',
     options=[
+        {'label': '隣接機器情報(show cdp neighbors)', 'value': 'cdp'},
         {'label': 'ポートステータス(show interfaces status)', 'value': 'interface_status'},
         {'label': 'IPインターフェース情報( show ip interface brief)', 'value': 'int_brief'},
         {'label': 'ルーティングテーブル(show ip route)', 'value': 'ip_route'},
