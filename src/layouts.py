@@ -55,6 +55,7 @@ default_stylesheet = common_style + json_load_default
 universe_stylesheet = common_style + json_load_universe
 flower_stylesheet = common_style + json_load_flower
 
+# ページ左側のコンテンツ
 theme_dropdown = dcc.Dropdown(
     id='theme_dropdown',
     options=[
@@ -66,6 +67,12 @@ theme_dropdown = dcc.Dropdown(
     placeholder='デザインを選択',
     clearable=False,
     className='theme'
+)
+
+core_hostname = dcc.Input(
+    id='core_hostname',
+    type='text',
+    placeholder='コアスイッチのホスト名を入力'
 )
 
 graph_layout = {
@@ -85,13 +92,19 @@ graph = cyt.Cytoscape(
 # ページ左側のレイアウト
 left = html.Div(
     [theme_dropdown,
+     core_hostname,
      graph],
     className='left',
     id='left',
     style={'width': '100%'}
 )
 
-# ページ右側のレイアウト
+# ページ右側のコンテンツ
+
+show_button = html.Button('各種出力', id='show_button')
+status_button = html.Button('現在のポートステータス', id='status_button')
+ping_button = html.Button('ping', id='ping_button')
+
 command_dropdown = dcc.Dropdown(
     id='command_dropdown',
     options=[
@@ -107,10 +120,17 @@ command_dropdown = dcc.Dropdown(
     clearable=False,
     className='command'
 )
+# ページ右側のレイアウト
 right = html.Div(
-    children=[html.H2(id='table_title'),
-              command_dropdown,
-              html.Div(id='table')],  # テーブル表示エリアは空のDivにしてidをつけておく
+    children=[html.H2(id='hostname'),
+              html.H3(id='ipaddr'),
+              html.H3(id='macaddr'),
+              html.H3(id='model'),
+              show_button,
+              status_button,
+              ping_button,
+              html.Div(id='command_area'),
+              html.Div(id='table_area')],  # テーブル表示エリアは空のDivにしてidをつけておく
     className='right',
     id='right',
 )

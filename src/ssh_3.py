@@ -48,6 +48,10 @@ for node in nodes_dict_list:
     version_dict = df_v.to_dict(orient='records')
     hostname = version_dict[0]['hostname']
     from_list.append(hostname)  # 描画対象ノードリストに追加
+    try:
+        macaddr = version_dict[0]['mac'][0]
+    except IndexError:
+        macaddr = 'no macaddr found.'
     model = version_dict[0]['hardware'][0]  # hardwareはリストで取得してる(textfsm)
 
     # show vtp statusコマンド実行結果(output_vtp)をDataFrameに変換してvtp domainとvtp modeのみ取得
@@ -69,8 +73,9 @@ for node in nodes_dict_list:
         ist_list.append(ist_data)
 
     # ノード・エッジデータ作成
-    nodes_list.append({'data': {'id': hostname, 'label': hostname, 'model': model, 'vtp_domain': vtp_domain,
-                                'vtp_mode': vtp_mode, 'interface_status':ist_list}})  # まずは自分を追加
+    nodes_list.append({'data': {'id': hostname, 'label': hostname, 'ipaddr': node['host'], 'macaddr': macaddr,
+                                'model': model, 'vtp_domain': vtp_domain,
+                                'vtp_mode': vtp_mode, 'interface_status': ist_list}})  # まずは自分を追加
 
     # show cdp neighborsコマンド実行結果(ouput_c)をDataFrameに変換してネイバー名とネイバーの機種名のみ取得し描画対象ノードリストに追加
     output_c = connection.send_command('show cdp neighbors', use_textfsm=True)
