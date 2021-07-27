@@ -1,19 +1,24 @@
 from dash.dependencies import Input, Output, State
+from netmiko import SSHDetect, ConnectHandler
+import pandas as pd
+
 from app import app
 
 from layouts import graph_data, default_stylesheet, universe_stylesheet, flower_stylesheet, command_dropdown
 
 import dash_table
+import ssh_3
 
 
-# ドロップダウンでスタイルを変更する。マウスをかざしたノードの色を変更する。
+# ドロップダウンでスタイルを変更する。マウスをかざしたノードの色を変更する。クリックしたエッジの太さを変更する。
 @app.callback(
     Output('graph', 'stylesheet'),  # グラフ部分のスタイル
     Output('html', 'style'),  # ページ全体のスタイル
     Input('theme_dropdown', 'value'),  # ドロップダウンで選択されたデザインの種類
     Input('graph', 'mouseoverNodeData'),  # マウスをかざしたノードのデータ辞書を受け取る
+    Input('graph', 'tapEdgeData')
 )
-def update_graph(theme, node_data_dict):  # Inputの値が引数になる。
+def update_graph(theme, node_data_dict, clicked_edge_dict):  # Inputの値が引数になる。
     # 選択したテーマ用のスタイル
     if theme == 'universe' == 'universe':
         selected_stylesheet = universe_stylesheet
@@ -33,14 +38,29 @@ def update_graph(theme, node_data_dict):  # Inputの値が引数になる。
                                  'border-style': 'double',
                                  'border-color': '#8b008b',
                                  'border-opacity': 0.9}}]
-
-        updated_stylesheet = selected_stylesheet + style_with_label
-
+        if clicked_edge_dict:
+            edge_style = [{'selector': '#' + clicked_edge_dict['id'],
+                           'style': {
+                               'width': 10,
+                               'label': 'test'
+                           }}]
+            print(edge_style)
+            updated_stylesheet = selected_stylesheet + style_with_label + edge_style
+        else:
+            updated_stylesheet = selected_stylesheet + style_with_label
     else:
-        updated_stylesheet = selected_stylesheet
+        if clicked_edge_dict:
+            edge_style = [{'selector': '#' + clicked_edge_dict['id'],
+                           'style': {
+                               'width': 10,
+                               'label': 'test'
+                           }}]
+            updated_stylesheet = selected_stylesheet + edge_style
+        else:
+            updated_stylesheet = selected_stylesheet
+
     # データが取れてるか
     # print(node_data_dict['model'])
-    print(updated_stylesheet)
     return updated_stylesheet, html_style
 
 
@@ -73,7 +93,7 @@ def show_node_info(clicked_node_dict):
 
 # edgeがクリックされたらVLAN情報を表示する。
 @app.callback(
-    Output('graph', 'style'),
+    Output('vlan', 'children'),  # Not style but stylesheet.
     Input('graph', 'tapEdgeData')
 )
 def show_vlan(clicked_edge_dict):
@@ -82,21 +102,25 @@ def show_vlan(clicked_edge_dict):
         source_node = clicked_edge_dict['source']
         target_node = clicked_edge_dict['target']
         for data in graph_data:
-            if data['id'] == source_node:
-                for neighbor in data['cdp']:
+            if data['data']['id'] == source_node:
+                print('ソースノード名：' + data['data']['id'])
+                for neighbor in data['data']['cdp']:
                     if neighbor['Neighbor'] == target_node:
-                        interface = neighbor['Local_interface']
-                        edge_label = {'selector': '#' + clicked_edge_dict['id'],
-                                            'style': {
-                                                'width': 10,
-                                                'label': 'Vlan' + source_info['Vlan'],
-                                                'text-background-color': 'white',
-                                                'text-background-opacity': 0.9,
-                                                'text-background-shape': 'rectangle',
-                                                'text-background-padding': '3px',
-                                                'font-size': 20}}
-                        edge_updated_stylesheet = selected_stylesheet + [style_edge_label]
-'''
+                        print('ターゲットノード名：' + neighbor['Neighbor'])
+                        # sh int statusの出力と合わせるための文字列処理
+                        interface = neighbor['Local_interface'][:2] + neighbor['Local_interface'][4:]
+                        for inf in data['data']['interface_status']:
+                            if inf['Port'] == interface:
+                                print('インターフェース名：' + inf['Port'])
+                                return 'VLAN：' + inf['Vlan']
+                            else:
+                                continue
+                    else:
+                        continue
+            else:
+                continue
+    else:
+        pass
 
 
 # 各種出力ボタンがクリックされたらコマンドドロップダウンを表示する。
@@ -192,21 +216,63 @@ def show_table(clicked_node_dict, command):
         return table_data
 
 
-'''
 # 現在のインターフェースステータスを取得して表示する。
 @app.callback(
-    Output('table_area', 'children'),
+    Output('status_area', 'children'),
     Input('graph', 'tapNodeData'),
     Input('status_button', 'n_clicks'),
     prevent_inital_call=True
 )
 def show_status_now(clicked_node_dict, n_clicks):
     if n_clicks != 0:
-        clicked_node_info = {'device_type': 'autodetect',
-                           'host': clicked_node_dict['ipaddr'],
-                           'username': ,
-                           'password': }
-'''
+        with open(ssh_3.nodes_path) as nf:
+            header = next(nf)  # ヘッダをスキップ
+            for line in nf:
+                # 一行のデータをカンマで分割してリスト化し、そこにstrip()で余分な空白を除去する
+                nodes_info_list = [x.strip() for x in line.split(',')]
+                nodes_dict_temp = {'device_type': nodes_info_list[0],
+                                   'host': nodes_info_list[1],
+                                   'username': nodes_info_list[2],
+                                   'password': nodes_info_list[3]}  # ここだけssh_autoブランチのバージョン
+                if nodes_dict_temp['host'] == clicked_node_dict['ipaddr']:
+                    guesser = SSHDetect()
+                    best_match = guesser.autodetect()
+                    nodes_dict_temp['device_type'] = best_match
+                    connection = ConnectHandler()
+                    ist_list = []
+                    output_ist = connection.send_command('show interfaces status', use_textfsm=True)
+                    df_ist = pd.DataFrame(output_ist)
+                    ist_dict = df_ist.to_dict(orient='records')
+                    for ist in ist_dict:
+                        ist_data = {'Port': ist['port'], 'Description': ist['name'], 'Status': ist['status'],
+                                    'Vlan': ist['vlan'],
+                                    'Duplex': ist['duplex'], 'Speed': ist['speed'], 'Type': ist['type']}
+                        ist_list.append(ist_data)
+                    table_columns = [
+                        {'name': 'Port', 'id': 'Port'},
+                        {'name': 'Description', 'id': 'Description'},
+                        {'name': 'Status', 'id': 'Status'},
+                        {'name': 'Vlan', 'id': 'Vlan'},
+                        {'name': 'Duplex', 'id': 'Duplex'},
+                        {'name': 'Speed', 'id': 'Speed'},
+                        {'name': 'Type', 'id': 'Type'}
+                    ]
+                    table_data = dash_table.DataTable(
+                        # columnsにデータを渡す
+                        columns=table_columns,
+                        # dataにデータを渡す
+                        # dataのキーとcolumnsのidが一致するように！
+                        data=ist_list,  # jsonから読み取るポートリスト
+                        # テーブルを画面いっぱいに広げるかどうか
+                        fill_width=False,  # 広げない
+                        style_cell={'fontSize': 18, 'textAlign': 'center'},
+                        style_header={'background-color': '#D7EEFF'}  # テーブルヘッダのスタイル
+                    )
+                    return table_data
+                else:
+                    continue
+    else:
+        pass
 
 
 # グラフのレイアウトを変更する
