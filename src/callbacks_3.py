@@ -1,7 +1,7 @@
 from dash.dependencies import Input, Output, State
 from app import app
 
-from layouts import default_stylesheet, universe_stylesheet, flower_stylesheet, command_dropdown
+from layouts import graph_data, default_stylesheet, universe_stylesheet, flower_stylesheet, command_dropdown
 
 import dash_table
 
@@ -46,7 +46,7 @@ def update_graph(theme, node_data_dict):  # Inputの値が引数になる。
 
 # ノードがクリックされたらグラフエリアを縮小してノード名を表示する。
 @app.callback(
-    Output('hostname', 'children'),  # valueではなくchildren
+    Output('hostname', 'children'),  # not value but children.
     Output('ipaddr', 'children'),
     Output('macaddr', 'children'),
     Output('model', 'children'),
@@ -70,6 +70,32 @@ def show_node_info(clicked_node_dict):
                    'visibility': 'visible'}
     return clicked_node_name, clicked_node_ip, clicked_node_mac, clicked_node_model, clicked_node_vtp, left_style, right_style
 
+# edgeがクリックされたらVLAN情報を表示する。
+@app.callback(
+    Output('graph', 'style'),
+    Input('graph', 'tapEdgeData')
+)
+def show_vlan(clicked_edge_dict):
+    if clicked_edge_dict:
+        # sourceとtargetのインターフェース情報を取得
+        source_node = clicked_edge_dict['source']
+        target_node = clicked_edge_dict['target']
+        for data in graph_data:
+            if data['id'] == source_node:
+                for source_info in data[]:
+                    # srcportと同じインターフェースだったら(cdpの出力はインターフェース名にスペース入ってるのでreplaceで消す)
+                    if source_info['Port'] == clicked_edge_dict['srcport'].replace(' ', ''):
+                        # エッジの太さ変更とラベル表示(Vlan情報)
+                        style_edge_label = {'selector': '#' + clicked_edge_dict['id'],
+                                            'style': {
+                                                'width': 10,
+                                                'label': 'Vlan' + source_info['Vlan'],
+                                                'text-background-color': 'white',
+                                                'text-background-opacity': 0.9,
+                                                'text-background-shape': 'rectangle',
+                                                'text-background-padding': '3px',
+                                                'font-size': 20}}
+                        edge_updated_stylesheet = selected_stylesheet + [style_edge_label]
 
 # 各種出力ボタンがクリックされたらコマンドドロップダウンを表示する。
 @app.callback(
