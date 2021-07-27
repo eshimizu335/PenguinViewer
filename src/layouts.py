@@ -75,6 +75,8 @@ core_hostname = dcc.Input(
     placeholder='コアスイッチのホスト名を入力'
 )
 
+apply_button = html.Button('適用', id='apply_button')
+
 graph_layout = {
     'name': 'random',
     # 'roots': '#' + core
@@ -92,7 +94,7 @@ graph = cyt.Cytoscape(
 # ページ左側のレイアウト
 left = html.Div(
     [theme_dropdown,
-     core_hostname,
+     html.Div([core_hostname, apply_button]),
      graph],
     className='left',
     id='left',
@@ -108,12 +110,11 @@ ping_button = html.Button('ping', id='ping_button')
 command_dropdown = dcc.Dropdown(
     id='command_dropdown',
     options=[
-        {'label': 'ポートステータス(show interfaces status)', 'value': 'port'},
-        {'label': 'IPインターフェース情報( show ip interface brief)', 'value': 'ip_int'},
-        {'label': 'VTP情報( show vtp status)', 'value': 'vtp'},
-        {'label': 'ルーティングテーブル(show ip route)', 'value': 'route'},
-        {'label': 'マックアドレステーブル(show mac-address-table)', 'value': 'mac'},
-        {'label': 'arp情報(show ip arp)', 'value': 'arp'},
+        {'label': 'ポートステータス(show interfaces status)', 'value': 'interface_status'},
+        {'label': 'IPインターフェース情報( show ip interface brief)', 'value': 'int_brief'},
+        {'label': 'ルーティングテーブル(show ip route)', 'value': 'ip_route'},
+        {'label': 'マックアドレステーブル(show mac-address-table)', 'value': 'mac_table'},
+        {'label': 'arp情報(show ip arp)', 'value': 'ip_arp'},
 
     ],
     placeholder='閲覧したい情報を選択',
@@ -126,6 +127,7 @@ right = html.Div(
               html.H3(id='ipaddr'),
               html.H3(id='macaddr'),
               html.H3(id='model'),
+              html.H3(id='vtp'),
               show_button,
               status_button,
               ping_button,
@@ -137,7 +139,9 @@ right = html.Div(
 
 layout_html = html.Div(
     children=[html.H1('Penguin Viewer'),
-              html.H2(access_time[0:4] + '/' + access_time[4:6] + '/' + access_time[6:8] + ' ' + access_time[9:11] + ':' + access_time[11:13] + 'のネットワーク図'),
+              html.H2(access_time[0:4] + '/' + access_time[4:6] + '/' + access_time[6:8] + ' ' + access_time[
+                                                                                                 9:11] + ':' + access_time[
+                                                                                                               11:13] + 'のネットワーク図'),
               html.Div([left, right])],
     id='html',
     style={'backgroundColor': '#D7EEFF',

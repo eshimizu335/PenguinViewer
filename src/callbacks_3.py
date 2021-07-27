@@ -50,6 +50,7 @@ def update_graph(theme, node_data_dict):  # Inputの値が引数になる。
     Output('ipaddr', 'children'),
     Output('macaddr', 'children'),
     Output('model', 'children'),
+    Output('vtp', 'children'),
     Output('left', 'style'),
     Output('right', 'style'),
     Input('graph', 'tapNodeData'),
@@ -58,15 +59,16 @@ def update_graph(theme, node_data_dict):  # Inputの値が引数になる。
 def show_node_info(clicked_node_dict):
     # クリックされたノードのidを取得
     clicked_node_name = clicked_node_dict['id']
-    clicked_node_ip = 'IPアドレス：'+clicked_node_dict['ipaddr']
-    clicked_node_mac = 'MACアドレス：'+clicked_node_dict['macaddr']
+    clicked_node_ip = 'IPアドレス：' + clicked_node_dict['ipaddr']
+    clicked_node_mac = 'MACアドレス：' + clicked_node_dict['macaddr']
     clicked_node_model = '機種：' + clicked_node_dict['model']
+    clicked_node_vtp = 'VTPドメイン：' + clicked_node_dict['vtp_domain'] + ', VTPモード：' + clicked_node_dict['vtp_mode']
 
     # 幅の変更とテーブルの表示
     left_style = {'width': '55%'}
     right_style = {'width': '45%',
                    'visibility': 'visible'}
-    return clicked_node_name, clicked_node_ip, clicked_node_mac, clicked_node_model, left_style, right_style
+    return clicked_node_name, clicked_node_ip, clicked_node_mac, clicked_node_model, clicked_node_vtp, left_style, right_style
 
 
 # 各種出力ボタンがクリックされたらコマンドドロップダウンを表示する。
@@ -92,7 +94,7 @@ def show_table(clicked_node_dict, command):
         pass
     else:
         # コマンド出力表の生成
-        if command == 'port':
+        if command == 'interface_status':
             table_columns = [
                 {'name': 'Port', 'id': 'Port'},
                 {'name': 'Description', 'id': 'Description'},
@@ -102,52 +104,40 @@ def show_table(clicked_node_dict, command):
                 {'name': 'Speed', 'id': 'Speed'},
                 {'name': 'Type', 'id': 'Type'}
             ]
-        elif command == 'ip_int':
+        elif command == 'int_brief':
             table_columns = [
                 {'name': 'Intf', 'id': 'Intf'},
                 {'name': 'Ipaddr', 'id': 'Ipaddr'},
                 {'name': 'Status', 'id': 'Status'},
                 {'name': 'Proto', 'id': 'Proto'},
             ]
-        elif command == 'vtp':
+        elif command == 'ip_route':
             table_columns = [
-                {'name': 'Port', 'id': 'Port'},
-                {'name': 'Description', 'id': 'Description'},
-                {'name': 'Status', 'id': 'Status'},
-                {'name': 'Vlan', 'id': 'Vlan'},
-                {'name': 'Duplex', 'id': 'Duplex'},
-                {'name': 'Speed', 'id': 'Speed'},
-                {'name': 'Type', 'id': 'Type'}
+                {'name': 'Protocol', 'id': 'Protocol'},
+                {'name': 'Type', 'id': 'Type'},
+                {'name': 'Network', 'id': 'Network'},
+                {'name': 'Mask', 'id': 'Mask'},
+                {'name': 'Distance', 'id': 'Distance'},
+                {'name': 'Metric', 'id': 'Metric'},
+                {'name': 'Nexthop_ip', 'id': 'Nexthop_ip'},
+                {'name': 'Nexthop_if', 'id': 'Nexthop_if'},
+                {'name': 'Uptime', 'id': 'Uptime'},
             ]
-        elif command == 'route':
+        elif command == 'mac_table':
             table_columns = [
-                {'name': 'Port', 'id': 'Port'},
-                {'name': 'Description', 'id': 'Description'},
-                {'name': 'Status', 'id': 'Status'},
+                {'name': 'Dst_addr', 'id': 'Dst_addr'},
+                {'name': 'Type', 'id': 'Type'},
                 {'name': 'Vlan', 'id': 'Vlan'},
-                {'name': 'Duplex', 'id': 'Duplex'},
-                {'name': 'Speed', 'id': 'Speed'},
-                {'name': 'Type', 'id': 'Type'}
+                {'name': 'Dst_port', 'id': 'Dst_port'},
             ]
-        elif command == 'mac':
+        elif command == 'ip_arp':
             table_columns = [
-                {'name': 'Port', 'id': 'Port'},
-                {'name': 'Description', 'id': 'Description'},
-                {'name': 'Status', 'id': 'Status'},
-                {'name': 'Vlan', 'id': 'Vlan'},
-                {'name': 'Duplex', 'id': 'Duplex'},
-                {'name': 'Speed', 'id': 'Speed'},
-                {'name': 'Type', 'id': 'Type'}
-            ]
-        elif command == 'arp':
-            table_columns = [
-                {'name': 'Port', 'id': 'Port'},
-                {'name': 'Description', 'id': 'Description'},
-                {'name': 'Status', 'id': 'Status'},
-                {'name': 'Vlan', 'id': 'Vlan'},
-                {'name': 'Duplex', 'id': 'Duplex'},
-                {'name': 'Speed', 'id': 'Speed'},
-                {'name': 'Type', 'id': 'Type'}
+                {'name': 'Protocol', 'id': 'Protocol'},
+                {'name': 'Address', 'id': 'Address'},
+                {'name': 'Age', 'id': 'Age'},
+                {'name': 'Mac', 'id': 'Mac'},
+                {'name': 'Type', 'id': 'Type'},
+                {'name': 'Interface', 'id': 'Interface'},
             ]
         else:
             table_columns = None
@@ -157,7 +147,7 @@ def show_table(clicked_node_dict, command):
             columns=table_columns,
             # dataにデータを渡す
             # dataのキーとcolumnsのidが一致するように！
-            data=clicked_node_dict['interface_status'],  # jsonから読み取るポートリスト
+            data=clicked_node_dict[command],  # jsonから読み取るポートリスト
             # テーブルを画面いっぱいに広げるかどうか
             fill_width=False,  # 広げない
             style_cell={'fontSize': 18, 'textAlign': 'center'},
@@ -166,6 +156,7 @@ def show_table(clicked_node_dict, command):
         return table_data
 
 
+'''
 # 現在のインターフェースステータスを取得して表示する。
 @app.callback(
     Output('table_area', 'children'),
@@ -179,18 +170,21 @@ def show_status_now(clicked_node_dict, n_clicks):
                            'host': clicked_node_dict['ipaddr'],
                            'username': ,
                            'password': }
+'''
+
 
 # グラフのレイアウトを変更する
 @app.callback(
     Output('graph', 'layout'),
-    Input('core_hostname', 'value')
+    Input('apply_button', 'n_clicks'),  # Input fires callbacks. State doesn't.
+    State('core_hostname', 'value')
 )
-def change_layout(core):
-    if core:
+def change_layout(n_clicks, core):
+    if n_clicks != 0 and core:
         new_layout = {
             'name': 'breadthfirst',
             'roots': '#' + core
         }
         return new_layout
-# else:
-#    pass
+    else:
+        pass
