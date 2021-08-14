@@ -7,6 +7,7 @@ import dash
 import dash_core_components as dcc
 import dash_cytoscape as cyt
 import dash_html_components as html
+import dash_table
 
 from app import app
 
@@ -21,7 +22,7 @@ latest_json_file = max(file_updates, key=file_updates.get)
 latest_graph = open(latest_json_file, 'r')
 graph_data = json.load(latest_graph)  # JSONの読み込み
 
-access_time = os.path.basename(latest_json_file)    # ファイル名からスイッチへのアクセス時刻を取得
+access_time = os.path.basename(latest_json_file)  # ファイル名からスイッチへのアクセス時刻を取得
 
 # スタイル指定のためのjson読み込み
 json_open_default = open(assets_folder + 'default.json')
@@ -54,6 +55,7 @@ default_stylesheet = common_style + json_load_default
 universe_stylesheet = common_style + json_load_universe
 flower_stylesheet = common_style + json_load_flower
 
+# ページ左側のコンテンツ
 theme_dropdown = dcc.Dropdown(
     id='theme_dropdown',
     options=[
@@ -67,8 +69,17 @@ theme_dropdown = dcc.Dropdown(
     className='theme'
 )
 
+core_hostname = dcc.Input(
+    id='core_hostname',
+    type='text',
+    placeholder='コアスイッチのホスト名を入力'
+)
+
+apply_button = html.Button('適用', id='apply_button')
+
 graph_layout = {
-    'name': 'circle'
+    'name': 'random',
+    # 'roots': '#' + core
 }
 graph = cyt.Cytoscape(
     id='graph',  # Cytoscape自体にもid,layout,styleが必要
@@ -80,17 +91,63 @@ graph = cyt.Cytoscape(
     layout=graph_layout
 )
 
+# ページ左側のレイアウト
+left = html.Div(
+    [theme_dropdown,
+     html.Div([core_hostname, apply_button]),
+     html.Div(id='vlan'),
+     graph],
+    className='left',
+    id='left',
+    style={'width': '100%'}
+)
 
-app.layout = html.Div(
-    children=[
-        html.H1('Penguin Viewer'),
-        html.H2(access_time[0:4] + '/' + access_time[4:6] + '/' + access_time[6:8] + ' ' + access_time[9:11] + ':' + access_time[11:13] + 'のネットワーク図'),
-        html.Div(graph)],
+# ページ右側のコンテンツ
+
+show_button = html.Button('各種出力', id='show_button')
+status_button = html.Button('現在のポートステータス', id='status_button')
+ping_button = html.Button('ping', id='ping_button')
+
+command_dropdown = dcc.Dropdown(
+    id='command_dropdown',
+    options=[
+        {'label': '隣接機器情報(show cdp neighbors)', 'value': 'cdp'},
+        {'label': 'ポートステータス(show interfaces status)', 'value': 'interface_status'},
+        {'label': 'IPインターフェース情報( show ip interface brief)', 'value': 'int_brief'},
+        {'label': 'ルーティングテーブル(show ip route)', 'value': 'ip_route'},
+        {'label': 'マックアドレステーブル(show mac-address-table)', 'value': 'mac_table'},
+        {'label': 'arp情報(show ip arp)', 'value': 'ip_arp'},
+
+    ],
+    placeholder='閲覧したい情報を選択',
+    clearable=False,
+    className='command'
+)
+# ページ右側のレイアウト
+right = html.Div(
+    children=[html.H2(id='hostname'),
+              html.H3(id='ipaddr'),
+              html.H3(id='macaddr'),
+              html.H3(id='model'),
+              html.H3(id='vtp'),
+              show_button,
+              status_button,
+              ping_button,
+              html.Div(id='status_area'),
+              html.Div(id='command_area'),
+              html.Div(id='table_area')],  # テーブル表示エリアは空のDivにしてidをつけておく
+    className='right',
+    id='right',
+)
+
+layout_html = html.Div(
+    children=[html.H1('Penguin Viewer'),
+              html.H2(access_time[0:4] + '/' + access_time[4:6] + '/' + access_time[6:8] + ' ' + access_time[
+                                                                                                 9:11] + ':' + access_time[
+                                                                                                               11:13] + 'のネットワーク図'),
+              html.Div([left, right])],
     id='html',
     style={'backgroundColor': '#D7EEFF',
            'display': 'block',
            'overflow-x': 'scroll',
            'white-space': 'nowrap'})
-
-if __name__ == '__main__':
-    app.run_server(debug=False)
