@@ -203,7 +203,6 @@ class InfoTable{
             }
         }
         this.div.append(table);
-        //$("<tbody>").append($(this.id));//ここで元々あったtableタグが消えてしまう！
         $(this.div).removeClass("invisible");
         table.addClass(this.class);
     }
@@ -269,16 +268,4 @@ const init = ()=>{
 window.onload = init();
 })
 
-//念のためとっておく書きかけコード
-//オブジェクト生成
-//const searchButton = $("search_button");
-//    searchButton.onclick = function showSearchResult(){
-//        let searchWord = document.getElementById("search_box").value;
-//        console.log(searchWord);
-//        let searchNodes = cy.nodes().filter(function(ele) {
-//            if (ele.data("id").indexOf(searchWord) > -1) {
-//                window.open("../html/search.html");
-//                return ele
-//            }
-//        });
 
