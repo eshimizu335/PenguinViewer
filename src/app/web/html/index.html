@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Penguin Viewer</title>
+    <link href="../css/style.css" rel="stylesheet" type="text/css" media="all">
+
+</head>
+<body>
+    <h1>Penguin Viewer</h1>
+    <a href = "./settings.html">設定ページ</a>
+    <div id = "graph_page">
+        <div id = "left" class="left_wide">
+            <script type="text/javascript" src="/eel.js"></script>  <!-- eelが用意してくれるらしい -->
+            <script src="../js/access-time.js"></script>
+            <!--
+        <h2>{{ access_time.access_year }}年{{ access_time.access_month }}月{{ access_time.access_date }}日のネットワーク図</h2> -->
+            <select  id = "theme" name="theme">
+                <option value="">デザインを選択</option>
+                <option value="default">標準</option>
+                <option value="universe">宇宙</option>
+                <option value="flower">花</option>
+            </select><br>
+            <input id="core_hostname" type="text" placeholder="コアスイッチのホスト名を入力">
+            <button id="core_apply" class="apply_button">適用</button>
+            <div id="graph"></div>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.20.0/cytoscape.min.js"></script>
+        </div>
+
+        <div id="right" class="right_narrow">
+            <h2><input id="search_box" type="text" placeholder="ホスト名を入力"></h2>
+            <button id="search_button">検索</button>
+            <br><button id="clear_button">クリア</button>
+            <h2 id="hostname"></h2>
+            <h3 id="ipaddr"></h3>
+            <h3 id="macaddr"></h3>
+            <h3 id="model"></h3>
+            <h3 id="vtp"></h3>
+            <button id="show_button_jp" class="invisible"></button>
+            <button id="show_button_cmd" class="invisible"></button><br>
+            <select id="command" class="invisible">
+                <option value="">選択</option>
+            </select>
+            <div id="table_area" class="invisible"></div>
+        </div>
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src = "../js/graph.js"></script>
+<!--<script src = "../js/search.js"></script>-->
+</body>
+</html>
