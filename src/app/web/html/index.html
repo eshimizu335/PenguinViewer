@@ -28,14 +28,32 @@
         </div>
 
         <div id="right" class="right_narrow">
-            <h2><input id="search_box" type="text" placeholder="ホスト名を入力"></h2>
+            <input id="search_box" type="text" placeholder="ホスト名を入力">
             <button id="search_button">検索</button>
             <br><button id="clear_button">クリア</button>
             <h2 id="hostname"></h2>
-            <h3 id="ipaddr"></h3>
-            <h3 id="macaddr"></h3>
-            <h3 id="model"></h3>
-            <h3 id="vtp"></h3>
+            <table id="info_table">
+                <tr>
+                    <td>IPアドレス</td>
+                    <td id="ipaddr"></td>
+                </tr>
+                <tr>
+                    <td>MACアドレス</td>
+                    <td id="macaddr"> </td>
+                </tr>
+                <tr>
+                    <td>機種</td>
+                    <td id="model"></td>
+                </tr>
+                <tr>
+                    <td>VTPドメイン</td>
+                    <td id="vtp"></td>
+                </tr>
+                <tr>
+                    <td>VTPステータス</td>
+                    <td id="vtp_s"></td>
+                </tr>
+            </table>
             <button id="show_button_jp" class="invisible"></button>
             <button id="show_button_cmd" class="invisible"></button><br>
             <select id="command" class="invisible">
