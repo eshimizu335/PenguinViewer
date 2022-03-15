@@ -52,11 +52,12 @@ class GeneralInfo{
     }
     showNodeInfoGeneral(){
         console.log("showNodeInfoGeneral");
-        $("#hostname").html("ホスト名："+this.node.data("id"));
-        $("#ipaddr").html("IPアドレス："+this.node.data("ipaddr"));
-        $("#macaddr").html("MACアドレス："+this.node.data("macaddr"));
-        $("#model").html("機種："+this.node.data("model"));
-        $("#vtp").html("VTPドメイン："+this.node.data("vtp_domain")+", VTPステータス："+this.node.data("vtp_mode"));
+        $("#hostname").html(this.node.data("id"));
+        $("#ipaddr").html(this.node.data("ipaddr"));
+        $("#macaddr").html(this.node.data("macaddr"));
+        $("#model").html(this.node.data("model"));
+        $("#vtp").html(this.node.data("vtp_domain"));
+        $("vtp_s").html(this.node.data("vtp_mode"));
     }
 }
 
@@ -122,22 +123,22 @@ class CommandDropdown{
     }
 }
 //output table
-class InfoTable{
+class OutputTable{
     constructor(i_evt, selectedOption){
         this.div = $("#table_area");
-        this.class = "info_table_visible";
+        this.class = "output_table_visible";
         this.nodeData = i_evt.target.data();
         this.selectedOption = selectedOption;
     }
-    displayInfoTable(){
-        console.log("displayInfoTable");
-        if($("#info_table")){
-          $("#info_table").remove();
+    displayOutputTable(){
+        console.log("displayOutputTable");
+        if($("#output_table")){
+          $("#output_table").remove();
         }
         if($("#no_data")){
             $("#no_data").remove();
         }
-        let table = $("<table id = 'info_table'><tbody>");
+        let table = $("<table id = 'output_table'><tbody>");
         let command = this.selectedOption;  //いる？
         let commandData;
         if(command === "cdp"){
@@ -250,8 +251,8 @@ const init = ()=>{
         });
 
         $(document).on("change", "#command", () =>{
-            let infoTable= new InfoTable(evt, $("#command").val());
-            infoTable.displayInfoTable();
+            let outputTable= new OutputTable(evt, $("#command").val());
+            outputTable.displayOutputTable();
         });
     });
     $(document).on("click", "#core_apply", () =>{
