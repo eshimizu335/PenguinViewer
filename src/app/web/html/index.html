@@ -21,10 +21,17 @@
                 <option value="universe">宇宙</option>
                 <option value="flower">花</option>
             </select><br>
-            <input id="core_hostname" type="text" placeholder="コアスイッチのホスト名を入力">
-            <button id="core_apply" class="apply_button">適用</button>
-            <div id="graph"></div>
+
+            <div id="graph_area">
+                <div id="access_time"></div>
+                <input id="core_hostname" type="text" placeholder="コアスイッチのホスト名を入力">
+                <button id="core_apply" class="apply_button">適用</button>
+                <button id="hostname_apply">ホスト名表示</button>
+                <button id="ipaddr_apply">IPアドレス表示</button>
+                <div id="graph"></div>
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.20.0/cytoscape.min.js"></script>
+            </div>
+
         </div>
 
         <div id="right" class="right_narrow">
