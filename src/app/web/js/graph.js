@@ -258,12 +258,20 @@ const init = ()=>{
     $(document).on("click", "#core_apply", () =>{
             let coreName= new CoreName();
             cy.elements().layout(coreName.showHierarchyLayout()).run();
-        });
+    });
     $(document).on("click", "#clear_button", () =>{
             viewerPage.clearRightArea();
             cy.resize();
             cy.fit();
-        });
+    });
+
+    $(document).on("click", "#hostname_apply", () =>{
+            cy.style().selector("node").style("content", "data(id)").update();
+    });
+
+    $(document).on("click", "#ipaddr_apply", () =>{
+            cy.style().selector("node").style("content", "data(ipaddr)").update();
+    });
 }
 //初回ロード
 window.onload = init();
