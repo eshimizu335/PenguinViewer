@@ -11,52 +11,72 @@
       }
   },
 
-    {"selector": "node",
-     "style": {
-         "text-valign": "center",
-         "text-halign": "center",
-         "color": "black",
-         "text-outline-width": 2,
-         "text-outline-color": "white",
-         "font-size": "20px",
-         "opacity": 0.9,
-         "shape": "square",
-         "width": 100,
-         "height": 50
-     }
-     },
+  {"selector": "node",
+   "style": {
+     "shape": "square",
+     "width": 100,
+     "height": 50,
+     "text-valign": "center",
+     "text-halign": "center",
+     "color": "#32373C",
+     "text-outline-width": 1,
+     "text-outline-color": "white",
+     "font-family": "'Meiryo', 'Segoe UI', 'Frutige', 'Dejavu Sans', 'Helvetica Neue', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Arial', 'Yu Gothic', 'sans-serif'",
+     "text-wrap": "wrap",
+     "text-max-width": "90",
+     "text-overflow-wrap": "anywhere",
+     "opacity": 0.9
+   }
+   },
 
     {
-        "selector": "edge",
-        "style": {
-            "target-arrow-shape": "none",
-            "line-color": "#A4C6FF",
-            "curve-style": "bezier",
-            "width": 3,
-            "font-size": 13,
-            "source-text-offset": 30,
-            "target-text-offset": 40,
-            "source-text-margin-x": 0,
-            "source-text-margin-y": 12,
-            "target-text-margin-x": 0,
-            "target-text-margin-y": 12,
-            "source-text-rotation": "autorotate",
-            "target-text-rotation": "autorotate"
-        }
+      "selector": "edge",
+      "style": {
+        "target-arrow-shape": "none",
+        "line-color": "#A4C6FF",
+        "curve-style": "bezier",
+        "width": 3,
+        "font-size": 13,
+        "source-text-offset": 30,
+        "target-text-offset": 40,
+        "source-text-margin-x": 0,
+        "source-text-margin-y": 12,
+        "target-text-margin-x": 0,
+        "target-text-margin-y": 12,
+        "source-text-rotation": "autorotate",
+        "target-text-rotation": "autorotate"
+      }
     },
 
     {
-        "selector": ".L3switch",
-        "style": {
-            "background-color": "#191970"
-        }
+      "selector": ".core",
+      "style": {
+        "background-color": "#191970"
+      }
     },
 
+  {
+    "selector": ".hover",
+    "style": {
+      "border-width": 5,
+      "border-style": "double",
+      "border-color": "#8b008b",
+      "border-opacity": 0.9
+    }
+  },
+
+  {
+    "selector": ".tap",
+    "style": {
+      "background-color":"#8b008b"
+    }
+  },
+
     {
-        "selector": ".L2_dist",
-        "style": {
-            "background-color": "#5D8DE0"
-        }
+      "selector": ".switch",
+      "style": {
+        "background-color": "#5D8DE0"
+      }
     },
 
     {
