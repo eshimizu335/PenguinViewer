@@ -44,6 +44,9 @@ class CoreName{
         }
     return hLayout;
     }
+    getCoreSelector(){
+        return "#"+this.name;
+    }
 }
 
 //tapped node's information
@@ -229,23 +232,29 @@ const init = ()=>{
     });
     cy.on("mouseover","node", (evt)=>{
         let node = evt.target;
+        let nodeSelector = "#"+node.data("id");
         if (nodeLabel === "hostname"){
-            cy.style().selector("#"+node.data("id")).style("content", "data(ipaddr)").update();
+            cy.style().selector(nodeSelector).style("content", "data(ipaddr)").update();
         }
         else if (nodeLabel === "ipaddr"){
-            cy.style().selector("#"+node.data("id")).style("content", "data(id)").update();
+            cy.style().selector(nodeSelector).style("content", "data(id)").update();
         }
+        cy.$(nodeSelector).addClass("hover");
     })
     cy.on("mouseout","node", (evt)=>{
         let node = evt.target;
+        let nodeSelector = "#"+node.data("id");
         if (nodeLabel === "hostname"){
-            cy.style().selector("#"+node.data("id")).style("content", "data(id)").update();
+            cy.style().selector(nodeSelector).style("content", "data(id)").update();
         }
         else if (nodeLabel === "ipaddr"){
-            cy.style().selector("#"+node.data("id")).style("content", "data(ipaddr)").update();
+            cy.style().selector(nodeSelector).style("content", "data(ipaddr)").update();
         }
+        cy.$(nodeSelector).removeClass("hover");
     })
     cy.on("tap", "node", (evt)=>{
+        let node = evt.target;
+        let nodeSelector = "#"+node.data("id");
         let generalInfo = new GeneralInfo(evt);
         let showButtonJp = new ShowButton("#show_button_jp", "各種出力(確認したい情報から選ぶ)");
         let showButtonCmd = new ShowButton("#show_button_cmd", "各種出力(コマンドから選ぶ)");
@@ -255,6 +264,9 @@ const init = ()=>{
         generalInfo.showNodeInfoGeneral();
         showButtonJp.displayShowButton();
         showButtonCmd.displayShowButton();
+
+        cy.$("node").removeClass("tap");
+        cy.$(nodeSelector).addClass("tap");
 
         $("#show_button_jp").on("click", ()=>{
             showButtonJp.generateCommandDropdown("Jp");
@@ -271,9 +283,12 @@ const init = ()=>{
     $(document).on("click", "#core_apply", () =>{
             let coreName= new CoreName();
             cy.elements().layout(coreName.showHierarchyLayout()).run();
+            cy.$(coreName.getCoreSelector()).addClass("core");  // change core colour
+
     });
     $(document).on("click", "#clear_button", () =>{
             viewerPage.clearRightArea();
+            cy.$("node").removeClass("tap");
             cy.resize();
             cy.fit();
     });
