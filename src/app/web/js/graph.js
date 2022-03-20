@@ -1,6 +1,7 @@
 "use strict";
 $(document).ready(function() {
 let nodeData;
+let nodeLabel = "hostname";
 
 class ViewerPage{
     constructor(){
@@ -170,10 +171,6 @@ class OutputTable{
             console.log("command not found");
         }
 
-        console.log(command);
-        console.log(this.nodeData);
-        console.log("commandData↓");
-        console.log(commandData);
         if(commandData === undefined || commandData.length === 0){
             return $("<h2 id = 'no_data'>データがありません</h2>").insertAfter($("#command"));
         }
@@ -195,11 +192,9 @@ class OutputTable{
             for(let column = 0; column < dataList.length; column++){
                 if (row === -1){
                     $("<th>"+dataList[column][0]+"</th>").appendTo(tr);
-                    //cell.style.backgroundColor = "#D7EEFF";
                 }
                 else{
                     $("<td>"+dataList[column][1]+"</td>").appendTo(tr);
-                    //cell.style.backgroundColor = "#FFFFFF";
                 }
             }
         }
@@ -232,6 +227,24 @@ const init = ()=>{
             }
         cy.style().clear().fromJson(newStyle).update();
     });
+    cy.on("mouseover","node", (evt)=>{
+        let node = evt.target;
+        if (nodeLabel === "hostname"){
+            cy.style().selector("#"+node.data("id")).style("content", "data(ipaddr)").update();
+        }
+        else if (nodeLabel === "ipaddr"){
+            cy.style().selector("#"+node.data("id")).style("content", "data(id)").update();
+        }
+    })
+    cy.on("mouseout","node", (evt)=>{
+        let node = evt.target;
+        if (nodeLabel === "hostname"){
+            cy.style().selector("#"+node.data("id")).style("content", "data(id)").update();
+        }
+        else if (nodeLabel === "ipaddr"){
+            cy.style().selector("#"+node.data("id")).style("content", "data(ipaddr)").update();
+        }
+    })
     cy.on("tap", "node", (evt)=>{
         let generalInfo = new GeneralInfo(evt);
         let showButtonJp = new ShowButton("#show_button_jp", "各種出力(確認したい情報から選ぶ)");
@@ -267,10 +280,12 @@ const init = ()=>{
 
     $(document).on("click", "#hostname_apply", () =>{
             cy.style().selector("node").style("content", "data(id)").update();
+            nodeLabel = "hostname";
     });
 
     $(document).on("click", "#ipaddr_apply", () =>{
             cy.style().selector("node").style("content", "data(ipaddr)").update();
+            nodeLabel = "ipaddr";
     });
 }
 //初回ロード
