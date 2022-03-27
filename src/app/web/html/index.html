@@ -8,7 +8,6 @@
 </head>
 <body>
     <h1>Penguin Viewer</h1>
-    <a href = "./settings.html">設定ページ</a>
     <div id = "graph_page">
         <div id = "left" class="left_wide">
             <script type="text/javascript" src="/eel.js"></script>  <!-- eelが用意してくれるらしい -->
@@ -28,6 +27,8 @@
                 <button id="core_apply" class="apply_button">適用</button>
                 <button id="hostname_apply">ホスト名表示</button>
                 <button id="ipaddr_apply">IPアドレス表示</button>
+                <input id="search_box" type="text" placeholder="ホスト名を入力">
+                <button id="search_button">検索</button>
                 <div id="graph"></div>
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.20.0/cytoscape.min.js"></script>
             </div>
@@ -35,8 +36,7 @@
         </div>
 
         <div id="right" class="right_narrow">
-            <input id="search_box" type="text" placeholder="ホスト名を入力">
-            <button id="search_button">検索</button>
+
             <br><button id="clear_button">クリア</button>
             <h2 id="hostname"></h2>
             <table id="info_table">

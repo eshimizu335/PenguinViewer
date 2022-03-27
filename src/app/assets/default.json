@@ -79,6 +79,14 @@
       }
     },
 
+  {
+      "selector": ".invisible_nodes",
+      "style": {
+        "visibility": "hidden"
+      }
+    },
+
+
     {
         "selector": ".L2_edge",
         "style": {

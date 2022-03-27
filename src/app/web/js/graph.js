@@ -302,6 +302,16 @@ const init = ()=>{
             cy.style().selector("node").style("content", "data(ipaddr)").update();
             nodeLabel = "ipaddr";
     });
+
+    $(document).on("click", "#search_button", () =>{
+        let searchNodes = cy.nodes().filter(function(ele){
+            //if (ele.data('id').indexOf($("#search_box").val()) > -1 || ele.data('ipaddr').indexOf($("#search_box").val()) > -1){
+            if (ele.data('id').indexOf($("#search_box").val()) > -1){
+                return(ele.union(ele.successors()))
+            }
+        });
+        cy.nodes().difference(searchNodes).addClass('invisible_nodes');
+    });
 }
 //初回ロード
 window.onload = init();
