@@ -312,6 +312,10 @@ const init = ()=>{
         });
         cy.nodes().difference(searchNodes).addClass('invisible_nodes');
     });
+
+    $(document).on("click", "#search_clear", () =>{
+            cy.nodes().removeClass("invisible_nodes");
+    });
 }
 //初回ロード
 window.onload = init();
