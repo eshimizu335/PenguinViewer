@@ -11,6 +11,12 @@
       }
   },
 
+  {"selector":".invisible_nodes",
+    "style":{
+      "visibility":"hidden"
+      }
+  },
+
   {"selector": "node",
    "style": {
      "shape": "square",
@@ -55,6 +61,19 @@
       }
     },
 
+  {"selector":".neighbor",
+    "style":{
+      "background-color": "#FFFFFF"
+      }
+  },
+
+  {"selector":".offline",
+    "style":{
+      "background-color": "#717375"
+      }
+  },
+
+
   {
     "selector": ".hover",
     "style": {
@@ -78,14 +97,6 @@
         "background-color": "#5D8DE0"
       }
     },
-
-  {
-      "selector": ".invisible_nodes",
-      "style": {
-        "visibility": "hidden"
-      }
-    },
-
 
     {
         "selector": ".L2_edge",
