@@ -4,16 +4,16 @@
     <meta charset="UTF-8">
     <title>Penguin Viewer</title>
     <link href="../css/style.css" rel="stylesheet" type="text/css" media="all">
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="/eel.js"></script>
+    <script src="../js/access-time.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.20.0/cytoscape.min.js"></script>
+    <script src = "../js/graph.js"></script>
 </head>
 <body>
     <h1>Penguin Viewer</h1>
     <div id = "graph_page">
         <div id = "left" class="left_wide">
-            <script type="text/javascript" src="/eel.js"></script>  <!-- eelが用意してくれるらしい -->
-            <script src="../js/access-time.js"></script>
-            <!--
-        <h2>{{ access_time.access_year }}年{{ access_time.access_month }}月{{ access_time.access_date }}日のネットワーク図</h2> -->
             <select  id = "theme" name="theme">
                 <option value="">デザインを選択</option>
                 <option value="default">標準</option>
@@ -23,6 +23,7 @@
 
             <div id="graph_area">
                 <div id="access_time"></div>
+                <input id="file_explorer" type="file" accept=".json"><!--レイアウトはあとで修正-->
                 <input id="core_hostname" type="text" placeholder="コアスイッチのホスト名を入力">
                 <button id="core_apply" class="apply_button">適用</button>
                 <button id="hostname_apply">ホスト名表示</button>
@@ -31,7 +32,7 @@
                 <button id="search_button">検索</button>
                 <button id="search_clear">検索解除</button>
                 <div id="graph"></div>
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.20.0/cytoscape.min.js"></script>
+
             </div>
 
         </div>
@@ -72,8 +73,8 @@
     </div>
 
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src = "../js/graph.js"></script>
+
+
 <!--<script src = "../js/search.js"></script>-->
 </body>
 </html>
