@@ -26,9 +26,14 @@ def get_access_time():
 
 
 @eel.expose
+def pass_output_folder():
+    return str(output_folder)
+
+
+@eel.expose
 def generate_graph_data(file=latest_file):  # set the latest file as a default file
-    latest_graph = open(file, 'r')
-    graph_data = json.load(latest_graph)
+    json_file = open(file, 'r')
+    graph_data = json.load(json_file)
     return graph_data
 
 
