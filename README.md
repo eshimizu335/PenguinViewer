@@ -12,7 +12,8 @@ Penguin Viewer automatically generates an interactive network graph from output 
 
 ## Acknowledgment
 
-This project is the result of the development in a security innovator training program [SecHack365](https://sechack365.nict.go.jp/) provided by the National Institute of Information and Communications Technology (NICT).
+This project is the result of the development in a security innovator training program [SecHack365](https://sechack365.nict.go.jp/) provided by the National Institute of Information and Communications Technology (NICT).  
+Also, it has been improved by naoto0689(https://github.com/naoto0689)'s contribution and PoC members' feedback.
 
 ## License
 
