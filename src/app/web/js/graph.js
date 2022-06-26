@@ -25,11 +25,37 @@ class ViewerPage{
 //Network Graph
 class GraphData{
     constructor(){
-        this.elements = eel.generate_graph_data()();
-        this.layout = {name:"grid"};
-        this.defaultStyle = eel.define_graph_style("default")();
-        this.flowerStyle = eel.define_graph_style("flower")();
-        this.universeStyle = eel.define_graph_style("universe")();
+        this.layout = {
+            name: "grid",
+            ready: function(){
+                $("#graph").css("opacity", 0.2)
+                $("#progress-box").css('display', 'block')
+                $("#progress-text").text('レイアウト計算中')
+            },
+            stop: function(){
+                $("#graph").css("opacity",1)
+                $("#progress-box").hide()
+            }
+        };
+    }
+
+    async set_style(option){
+        let style = await eel.define_graph_style(option)();
+        return style;
+    }
+
+    async loading_elements(path="default"){
+        let elements;
+        if (path==="default"){
+            elements = await eel.generate_graph_data()();
+            console.log("elements");
+        }
+        else{
+            console.log("update graph");
+            console.log(path);
+            elements = await eel.generate_graph_data(path)();
+        }
+        return elements;
     }
 }
 //core hostname for hierarchy layout
@@ -207,16 +233,25 @@ class OutputTable{
     }
 }
 
+//let changeGraph = (path)=> {
+  //  return new Promise((resolve,reject)=>{
+    //    let newGraphData = new GraphData(path);
+     //   return newGraphData;
+       // resolve();
+    //});
+//}
 
 const init = ()=>{
     let viewerPage = new ViewerPage;
     let graphData = new GraphData();
-    let cy = cytoscape({
+    var cy = cytoscape({
             container:$("#graph"),
-            elements:graphData.elements,
-            style:graphData.defaultStyle,
+            elements:graphData.loading_elements(),
+            style:graphData.set_style("default"),
+            //style:graphData.universeStyle,
             layout:graphData.layout,
         });
+
     $(document).on("change", "#theme", async () =>{
         let newStyle;
         if ($("#theme").val() === "flower"){
@@ -309,6 +344,9 @@ const init = ()=>{
             if (ele.data('id').indexOf($("#search_box").val()) > -1){
                 return(ele.union(ele.successors()))
             }
+            else{
+                console.log("NotFound");
+            }
         });
         cy.nodes().difference(searchNodes).addClass('invisible_nodes');
     });
@@ -316,9 +354,47 @@ const init = ()=>{
     $(document).on("click", "#search_clear", () =>{
             cy.nodes().removeClass("invisible_nodes");
     });
-}
+
+    $(document).on("click", "#graph_update", async () =>{
+            if ($("#file_explorer").prop("files").length === 0){
+                alert('ファイルを選択してから実行してください。');
+            }
+            else{
+                let output_folder = await eel.pass_output_folder()();
+                let selected_filename = $("#file_explorer")[0].files[0].name;
+                console.log(output_folder);
+                //let newGraph = await changeGraph(output_folder+"/"+selected_filename);
+                //console.log(newGraph.elements);
+                //cy.json({
+                  //  elements:newGraph.loading_elements(output_folder+"/"+selected_filename),
+                   // style:newGraph.defaultStyle,
+                    //layout:newGraph.layout
+                    let newGraphData = new GraphData();
+                    cy.json({
+                        elements: await eel.generate_graph_data(output_folder+"/"+selected_filename)(), // コンストラクタを生成すると上手くいかない
+                        style: await eel.define_graph_style("flower")(),
+                        layout:newGraphData.layout
+                    });
+                    //await console.log(newGraphData.loading_elements(output_folder+"/"+selected_filename));
+                    console.log("updated");
+                }
+    });
+};
+
 //初回ロード
 window.onload = init();
 })
 
+
+
+/*elements: [
+    { data: { id: 'a' } },
+    { data: { id: 'b' } },
+    {
+      data: {
+        id: 'ab',
+        source: 'a',
+        target: 'b'
+      }
+    }]*/
 
